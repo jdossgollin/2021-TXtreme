@@ -14,8 +14,6 @@ from src.path import PARDIR
 BASE_TEMP = 68  # degrees F
 DURATIONS = [1, 2, 3, 4, 5, 6]
 
-STNID = "USW00012918"
-
 
 def calc_hdd(stnid: str, base_temp: int = BASE_TEMP) -> pd.DataFrame:
     """Read the input data file and calculate a time series of heating degree days"""

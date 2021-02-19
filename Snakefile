@@ -1,19 +1,29 @@
 import numpy as np
 
+BERKELEY_DECADES = np.arange(1880, 2020, 10)
+
 rule default_rule:
     input: 
         "data/processed/ghcnd_valid.csv",
-        expand(
-            "data/raw/berkeleyearth/{var}_{decade}.nc",
-            var=["TMIN", "TMAX", "TAVG"],
-            decade=np.arange(1880, 2020, 10)
-        ),
+        expand("data/processed/berkeleyearth/{var}.nc", var=["TMIN", "TMAX", "TAVG"]),
+        "data/processed/era5/temperature.nc",
 
 # Download the raw berkeley earth temperature data: http://berkeleyearth.org/data/
 rule get_berkeley_earth:
     output: "data/raw/berkeleyearth/{var}_{decade}.nc"
     shell: "wget -O {output} http://berkeleyearth.lbl.gov/auto/Global/Gridded/Complete_{wildcards.var}_Daily_LatLong1_{wildcards.decade}.nc"
 
+rule aggregate_berkeley_earth:
+    input: 
+        script = "scripts/aggregate_berkeleyearth.py",
+        files = expand("data/raw/berkeleyearth/{{var}}_{decade}.nc", decade=BERKELEY_DECADES),
+    output: "data/processed/berkeleyearth/{var}.nc"
+    shell: "python {input.script} -i {input.files} -o {output}"
+
+rule get_era5:
+    input: script="scripts/get_era5.py"
+    output: "data/processed/era5/temperature.nc"
+    shell: "python {input.script} -o {output}"
 
 # Download the list of all GHCND stations and metadata from NOAA
 rule get_ghcnd_stations:
@@ -41,4 +51,3 @@ rule historical_exceedance:
         dat = "data/raw/ghcnd_all/{stnid}.dly",
     output: "data/processed/exceedances/{stnid}.csv"
     shell: "python {input.script} --stnid {stnid} -o {output}"
-

@@ -11,4 +11,7 @@ How extreme was the cold snap in Texas?
 
 ## To Run
 
-`snakemake --n 1`
+1. Download the GPWV4 data
+1. Register for [a CDSAPI key](https://cds.climate.copernicus.eu/api-how-to) with the ECMWF
+
+`snakemake --n <some number>`; at least 2 is advised

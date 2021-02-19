@@ -7,6 +7,7 @@ dependencies:
   - python=3.7
   - black
   - cartopy
+  - cdsapi
   - dask
   - jupyterlab
   - matplotlib
@@ -15,6 +16,7 @@ dependencies:
   - numpy
   - pandas
   - pylint
+  - regionmask
   - scipy
   - snakemake
   - tqdm
