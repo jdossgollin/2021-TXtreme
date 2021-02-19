@@ -1,0 +1,21 @@
+name: txtreme
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.7
+  - black
+  - cartopy
+  - dask
+  - jupyterlab
+  - matplotlib
+  - mypy
+  - netcdf4
+  - numpy
+  - pandas
+  - pylint
+  - scipy
+  - snakemake
+  - tqdm
+  - xarray

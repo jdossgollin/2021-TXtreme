@@ -1,3 +1,8 @@
+data/raw/
+data/processed/
+.snakemake/
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
