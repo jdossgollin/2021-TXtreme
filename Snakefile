@@ -6,22 +6,30 @@ rule default_rule:
     input: 
         "data/processed/ghcnd_exceedances.csv",
         expand("data/processed/berkeleyearth/{var}.nc", var=["TMIN", "TMAX"]),
-        "data/processed/era5/hdd.nc",
+        "data/processed/era5/exceedance.nc",
 
 # use the API to download hourly ERA5 temperature data
 # you will get an error unless you register for account; see README.md
+ERA_YEARS = np.arange(1950, 2021+1)
 rule get_era5:
     input: script="scripts/get_era5.py"
-    output: "data/processed/era5/temperature.nc"
-    shell: "python {input.script} -o {output}"
+    output: "data/processed/era5/temp_hourly_{year}.nc"
+    shell: "python {input.script} --year {wildcards.year} -o {output}"
 
 # aggregate ERA5 data to daily heating degree days
 rule era5_hdd:
     input:
         script="scripts/era5_hdd.py",
-        infile="data/processed/era5/temperature.nc",
-    output: "data/processed/era5/hdd.nc"
+        infile="data/processed/era5/temp_hourly_{year}.nc",
+    output: "data/processed/era5/hdd_{year}.nc"
     shell: "python {input.script} -i {input.infile} -o {output}"
+
+rule era5_return:
+    input:
+        script="scripts/era5_return.py",
+        infiles = expand("data/processed/era5/hdd_{year}.nc", year=ERA_YEARS),
+    output: "data/processed/era5/exceedance.nc"
+    shell: "python {input.script} -i {input.infiles} -o {output}"
 
 # Download the raw berkeley earth temperature data: http://berkeleyearth.org/data/
 rule get_berkeley_earth:

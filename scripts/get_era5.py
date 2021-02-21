@@ -13,16 +13,22 @@ def main() -> None:
 
     # parse command line arguments
     parser = argparse.ArgumentParser()
+    parser.add_argument("--year", type=int)
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
+    if args.year >= 1979:
+        dataname = "reanalysis-era5-single-levels"
+    else:
+        dataname = "reanalysis-era5-single-levels-preliminary-back-extension"
+
     ecmwf_client = cdsapi.Client()
     ecmwf_client.retrieve(
-        "reanalysis-era5-single-levels",
+        dataname,
         {
             "product_type": "reanalysis",
             "variable": "2m_temperature",
-            "year": [f"{yr}" for yr in np.arange(1979, 2021 + 1)],
+            "year": [args.year],
             "month": [
                 "01",
                 "02",
@@ -57,6 +63,7 @@ def main() -> None:
             ],
             "area": [38, -108, 25, -92],
             "format": "netcdf",
+            "grid": [1.0, 1.0],
         },
         args.outfile,
     )
