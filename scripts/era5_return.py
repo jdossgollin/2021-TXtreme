@@ -24,7 +24,7 @@ def main() -> None:
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
-    era5 = xr.open_mfdataset(args.infile)["HDD"]
+    era5 = xr.open_mfdataset(args.infiles)["HDD"].compute()
     rolling = xr.Dataset(
         {f"hdd_{dur}_days": era5.rolling(time=dur).mean() for dur in DURATIONS}
     )
@@ -35,30 +35,20 @@ def main() -> None:
     rolling["year_eff"] = xr.DataArray(
         year_eff, coords={"time": rolling["time"]}, dims="time"
     )
-    annual = rolling.groupby("year_eff").mean(dim="time")
+    annual = rolling.groupby("year_eff").max(dim="time")
 
-    historical = annual.sel(year_eff=slice(0, 2020))
-    extreme = annual.sel(year_eff=2021)
-
-    era5_exceedance = extreme.copy() * np.nan
-    for lon in tqdm(era5_exceedance["longitude"].values):
-        for lat in era5_exceedance["latitude"].values:
+    era5_return = annual.sel(year_eff=2021).copy() * 0
+    for lon in tqdm(era5_return["longitude"].values):
+        for lat in era5_return["latitude"].values:
             for dur in DURATIONS:
-                y = (
-                    extreme[f"hdd_{dur}_days"]
-                    .sel(longitude=lon, latitude=lat)
-                    .values.flatten()
-                )
-                x = (
-                    historical[f"hdd_{dur}_days"]
-                    .sel(longitude=lon, latitude=lat)
-                    .values.flatten()
-                )
-                era5_exceedance[f"hdd_{dur}_days"].sel(
-                    longitude=lon, latitude=lat
-                ).values = return_period(y, x)
+                var = f"hdd_{dur}_days"
+                sub = annual[var].sel(longitude=lon, latitude=lat)
+                hdd_obs = sub.sel(year_eff=slice(0, 2020)).values
+                hdd_21 = sub.sel(year_eff=2021).values
+                rt_estimate = return_period(hdd_21, hdd_obs)
+                era5_return[var].loc[dict(longitude=lon, latitude=lat)] = rt_estimate
 
-    era5_exceedance.to_netcdf(args.outfile, format="NETCDF4")
+    era5_return.to_netcdf(args.outfile, format="NETCDF4")
 
 
 if __name__ == "__main__":

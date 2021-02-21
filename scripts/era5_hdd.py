@@ -23,14 +23,8 @@ def main() -> None:
 
     # combine the two experiments
     # see https://confluence.ecmwf.int/pages/viewpage.action?pageId=173385064
-    switch_time = np.min(np.where(era5.sel(expver=1).isnull())[0])
-    era5 = xr.concat(
-        [
-            era5.sel(expver=1).isel(time=slice(0, switch_time)),
-            era5.sel(expver=5).isel(time=slice(switch_time, -1)),
-        ],
-        dim="time",
-    )
+    if "expver" in era5.dims:
+        era5 = era5.mean(dim="expver")
 
     era5 = (era5 - 273) * 9 / 5 + 32  # Kelvin to F
 
