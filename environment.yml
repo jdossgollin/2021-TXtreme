@@ -13,6 +13,7 @@ dependencies:
   - jupyterlab
   - matplotlib
   - mypy
+  - nb_black
   - netcdf4
   - numpy
   - pandas
