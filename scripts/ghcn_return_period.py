@@ -3,50 +3,48 @@ Calculate the empirical return period of cold temperature extremes for a given G
 """
 
 import argparse
-import os
+from tqdm import tqdm
 
 import numpy as np
 import pandas as pd
 
-from src.read_ghcn import read_ghcn_data_file
-from src.path import PARDIR
+from codebase.calc import cold_return_period
+from codebase.data import get_ghcn_data
 
-BASE_TEMP = 68  # degrees F
-DURATIONS = [1, 2, 3, 4, 5, 6]
-
-
-def calc_hdd(stnid: str, base_temp: int = BASE_TEMP) -> pd.DataFrame:
-    """Read the input data file and calculate a time series of heating degree days"""
-    fname = os.path.join(PARDIR, "data", "raw", "ghcnd_all", f"{stnid}.dly")
-    temp = read_ghcn_data_file(fname, variables=["TMIN", "TMAX"]).apply(
-        lambda x: x * 0.9 / 5 + 32  # 0.1 deg C to deg F
-    )
-    # TAVG has spotty data availability so create a midpoint temperature
-    heat_deg_days = base_temp - (temp["TMIN"] + temp["TMAX"]) / 2
-    heat_deg_days.loc[lambda df: df < 0] = 0.0
-    return heat_deg_days
+DURATIONS = [1, 2, 3, 4]
 
 
-def calc_historical_exceedance_prob(
-    stnid: str, base_temp: int = BASE_TEMP
-) -> pd.Series:
+def calc_return_period(stnid: str) -> pd.Series:
     """
     Calculate the probability with which the 2020-21 winter is exceeded in
     the historical record using an empirical estimator
     """
-    hdd = calc_hdd(stnid, base_temp=base_temp)
-    hdd_roll = pd.DataFrame(
-        {f"hdd_{dur}_days": hdd.rolling(dur).mean() for dur in DURATIONS}
+
+    temp = get_ghcn_data(stnid).assign(TAVG=lambda df: (df["TMAX"] + df["TMIN"] / 2))
+
+    # get rolling minima
+    temp_roll = pd.DataFrame(
+        {f"temp_{dur}_days": temp["TAVG"].rolling(dur).mean() for dur in DURATIONS}
     ).dropna()
 
     # define years starting in the summer so winter seasons are grouped together
-    hdd_roll["temp_year"] = hdd_roll.index.year + np.int_(hdd_roll.index.month > 7)
-    hdd_annual = hdd_roll.groupby("temp_year").max()
-
-    hdd_2021 = hdd_annual.loc[2021]
-    hdd_hist = hdd_annual.loc[:2020]
-
-    return (hdd_hist > hdd_2021).mean()
+    # if there are inadequate obs for a given year, throw it
+    temp_roll["temp_year"] = temp_roll.index.year + np.int_(temp_roll.index.month > 7)
+    temp_annual = (
+        temp_roll.groupby("temp_year")
+        .agg(lambda x: np.min(x) if len(x) > 300 else np.nan)
+        .dropna()
+    )
+    temp_21 = temp_roll.loc["2021-01-01":"2021-03-01"].min()
+    temp_hist = temp_annual.loc[:2020]
+    exceedance = pd.Series(
+        {
+            col: cold_return_period(temp_21[col], temp_hist[col])
+            for col in temp_annual.columns
+        }
+    )
+    exceedance.name = stnid
+    return exceedance
 
 
 def main() -> None:
@@ -54,13 +52,15 @@ def main() -> None:
 
     # parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stnid", type=str, default="USW00012918")
+    parser.add_argument("-i", "--infile", type=str)
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
-    historical_exceedances = calc_historical_exceedance_prob(args.stnid)
-    historical_exceedances.name = args.stnid
-    historical_exceedances.to_csv(args.outfile)
+    stations = pd.read_csv(args.infile)["ID"].unique()
+    exceedance_probs = pd.concat(
+        [calc_return_period(stnid) for stnid in tqdm(stations)], axis=1
+    ).T
+    exceedance_probs.to_csv(args.outfile)
 
 
 if __name__ == "__main__":

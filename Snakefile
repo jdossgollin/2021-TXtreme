@@ -4,15 +4,31 @@ BERKELEY_DECADES = np.arange(1880, 2020, 10)
 
 rule default_rule:
     input: 
-        "data/processed/ghcnd_valid.csv",
-        expand("data/processed/berkeleyearth/{var}.nc", var=["TMIN", "TMAX", "TAVG"]),
-        "data/processed/era5/temperature.nc",
+        "data/processed/ghcnd_exceedances.csv",
+        expand("data/processed/berkeleyearth/{var}.nc", var=["TMIN", "TMAX"]),
+        "data/processed/era5/hdd.nc",
+
+# use the API to download hourly ERA5 temperature data
+# you will get an error unless you register for account; see README.md
+rule get_era5:
+    input: script="scripts/get_era5.py"
+    output: "data/processed/era5/temperature.nc"
+    shell: "python {input.script} -o {output}"
+
+# aggregate ERA5 data to daily heating degree days
+rule era5_hdd:
+    input:
+        script="scripts/era5_hdd.py",
+        infile="data/processed/era5/temperature.nc",
+    output: "data/processed/era5/hdd.nc"
+    shell: "python {input.script} -i {input.infile} -o {output}"
 
 # Download the raw berkeley earth temperature data: http://berkeleyearth.org/data/
 rule get_berkeley_earth:
     output: "data/raw/berkeleyearth/{var}_{decade}.nc"
     shell: "wget -O {output} http://berkeleyearth.lbl.gov/auto/Global/Gridded/Complete_{wildcards.var}_Daily_LatLong1_{wildcards.decade}.nc"
 
+# aggregate berkeley earth data
 rule aggregate_berkeley_earth:
     input: 
         script = "scripts/aggregate_berkeleyearth.py",
@@ -20,10 +36,14 @@ rule aggregate_berkeley_earth:
     output: "data/processed/berkeleyearth/{var}.nc"
     shell: "python {input.script} -i {input.files} -o {output}"
 
-rule get_era5:
-    input: script="scripts/get_era5.py"
-    output: "data/processed/era5/temperature.nc"
-    shell: "python {input.script} -o {output}"
+# convert berkeley earth data to daily heating degree days
+rule berkeley_earth_hdd:
+    input:
+        script = "scripts/berkeley_earth_hdd.py",
+        tmin = "data/processed/berkeleyearth/TMIN.nc",
+        tmax = "data/processed/berkeleyearth/TMAX.nc",
+    output: "data/processed/berkeleyearth/hdd.nc"
+    shell: "python {input.script} --tmin {input.tmin} --tmax {input.tmax} -o {output}"
 
 # Download the list of all GHCND stations and metadata from NOAA
 rule get_ghcnd_stations:
@@ -48,6 +68,6 @@ rule ghcnd_subset:
 rule historical_exceedance:
     input:
         script = "scripts/ghcn_return_period.py",
-        dat = "data/raw/ghcnd_all/{stnid}.dly",
-    output: "data/processed/exceedances/{stnid}.csv"
-    shell: "python {input.script} --stnid {stnid} -o {output}"
+        stations = "data/processed/ghcnd_valid.csv",
+    output: "data/processed/ghcnd_exceedances.csv"
+    shell: "python {input.script} -i {input.stations} -o {output}"

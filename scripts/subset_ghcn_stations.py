@@ -3,46 +3,46 @@ Filter the GHCND stations
 """
 
 import argparse
-import os
 from tqdm import tqdm
 
-import pandas as pd
+from pandas import to_datetime
 
-from src.read_ghcn import read_ghcn_data_file
-from src.path import PARDIR
+from codebase.read_ghcn import read_station_metadata
+from codebase.data import get_ghcn_data
 
 STATES = ["TX"]
 MIN_OBS = 60 * 365.25
+MIN_DATE = "2021-02-17"  # if stations don't have this data, there's no point
 
-COLNAMES = [
-    "ID",
-    "LATITUDE",
-    "LONGITUDE",
-    "ELEVATION",
-    "STATE",
-    "NAME",
-    "GSN FLAG",
-    "HCN_CRN_FLAG",
-    "WMO_ID",
-]
-COLSPECS = [
-    (0, 11),
-    (12, 20),
-    (21, 30),
-    (31, 37),
-    (38, 40),
-    (41, 71),
-    (72, 75),
-    (76, 79),
-    (80, 85),
+# only keep stations that have major cold snaps well recorded
+REQUIRED_DATES = [
+    "1983-12-23",
+    "1983-12-24",
+    "1983-12-25",
+    "1989-12-12",
+    "1989-12-16",
+    "1989-12-23",
+    "1989-12-24",
+    "2011-02-01",
+    "2011-02-02",
+    "2011-02-03",
+    "2011-02-04",
+    "2011-02-05",
+    "2021-02-15",
+    "2021-02-16",
+    "2021-02-17",
 ]
 
 
 def is_valid_record(stnid: str) -> bool:
     """Does an ID have sufficient data?"""
-    fname = os.path.join(PARDIR, "data", "raw", "ghcnd_all", f"{stnid}.dly")
-    dat = read_ghcn_data_file(fname, variables=["TMIN", "TMAX"])
-    return (dat.shape[0] >= MIN_OBS) & (dat.index.max().year == 2021)
+    dat = get_ghcn_data(stnid)
+    conditions = [
+        dat.shape[0] >= MIN_OBS,
+        dat.index.max() >= to_datetime(MIN_DATE),
+        dat.index.isin(REQUIRED_DATES).sum() == len(REQUIRED_DATES),
+    ]
+    return all(conditions)
 
 
 def main() -> None:
@@ -58,10 +58,11 @@ def main() -> None:
     assert args.infile, "please specify input file"
 
     # read in all stations & get only those in STATES
-    stations = pd.read_fwf(args.infile, names=COLNAMES, colspecs=COLSPECS).loc[
-        lambda df: df["STATE"].isin(STATES),
-        ["ID", "LATITUDE", "LONGITUDE", "STATE", "NAME"],
-    ]
+    stations = (
+        read_station_metadata(args.infile)
+        .loc[lambda df: df["STATE"].isin(STATES)]
+        .reset_index()[["ID", "LATITUDE", "LONGITUDE", "STATE", "NAME"]]
+    )
 
     # get the IDs that have sufficient data
     valid_ids = [stnid for stnid in tqdm(stations["ID"]) if is_valid_record(stnid)]

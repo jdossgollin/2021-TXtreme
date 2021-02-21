@@ -93,6 +93,8 @@ DATA_COL_DTYPES = [
 ]
 DATA_HEADER_DTYPES.update({k: v for d in DATA_COL_DTYPES for k, v in d.items()})
 
+NA_VALUES = [-9999.0, -9999, 0, 0.0]
+
 
 def read_station_metadata(filename="ghcnd-stations.txt"):
     """Reads in station metadata
@@ -111,10 +113,10 @@ def read_station_metadata(filename="ghcnd-stations.txt"):
 
 
 def read_ghcn_data_file(
-    filename="ghcnd_all/ACW00011604.dly",
+    filename,
     variables=None,
     include_flags=False,
-    dropna="all",
+    dropna=True,
 ):
     """Reads in all data from a GHCN .dly data file
 
@@ -145,9 +147,9 @@ def read_ghcn_data_file(
     df = df.stack(level="DAY").unstack(level="ELEMENT")
 
     if dropna:
-        df.replace(-9999.0, pd.NA, inplace=True)
-        df.replace(-9999, pd.NA, inplace=True)
-        df.dropna(how=dropna, inplace=True)
+        for val in NA_VALUES:
+            df = df.replace(val, pd.NA)
+        df = df.dropna()
 
     df.index = pd.to_datetime(
         df.index.get_level_values("YEAR") * 10000
