@@ -63,7 +63,7 @@ def main() -> None:
             ],
             "area": [38, -108, 25, -92],
             "format": "netcdf",
-            "grid": [1.0, 1.0],
+            "grid": [0.25, 0.25],
         },
         args.outfile,
     )
