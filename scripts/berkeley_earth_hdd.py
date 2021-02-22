@@ -21,7 +21,6 @@ def main() -> None:
     args = parser.parse_args()
 
     t_hdd = (xr.open_dataarray(args.tmin) + xr.open_dataarray(args.tmax)) / 2
-    t_hdd = t_hdd * 9 / 5 + 32  # convert to degrees F
     hdd = np.maximum(BASE_TEMP - t_hdd, 0).resample(time="1D").mean()
     hdd.name = "HDD"
 

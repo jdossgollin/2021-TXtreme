@@ -11,15 +11,19 @@ import xarray as xr
 
 def parse_file(fname: str) -> xr.Dataset:
     """Read in one of the data files"""
-    ds = xr.open_dataset(fname).sel(latitude=slice(25, 50), longitude=slice(-125, -65))
-    ds["time"] = pd.to_datetime(ds[["year", "month", "day"]].to_dataframe())
+    bkds = xr.open_dataset(fname).sel(
+        latitude=slice(25, 50), longitude=slice(-125, -65)
+    )
+    bkds["time"] = pd.to_datetime(bkds[["year", "month", "day"]].to_dataframe())
     climatology = (
-        ds["climatology"]
-        .sel(day_number=np.int_(ds["day_of_year"] - 1))
+        bkds["climatology"]
+        .sel(day_number=np.int_(bkds["day_of_year"] - 1))
         .rename({"day_number": "time"})
     )
-    climatology["time"] = ds["time"]
-    return ds["temperature"] + climatology
+    climatology["time"] = bkds["time"]
+    temp_c = bkds["temperature"] + climatology
+    temp_f = temp_c * 9 / 5 + 32
+    return temp_f
 
 
 def main() -> None:

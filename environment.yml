@@ -16,10 +16,12 @@ dependencies:
   - nb_black
   - netcdf4
   - numpy
+  - openpyxl
   - pandas
   - pylint
   - regionmask
   - scipy
+  - seaborn
   - snakemake
   - tqdm
   - xarray

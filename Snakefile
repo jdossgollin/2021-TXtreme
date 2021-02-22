@@ -1,16 +1,26 @@
+"""
+Snakefile: see snakemake.readthedocs.io/
+
+We use Snakefile to collect required data. Then we run final analysis
+steps in Jupyter
+"""
+
+
 import numpy as np
 
 BERKELEY_DECADES = np.arange(1880, 2020, 10)
+ERA_YEARS = np.arange(1950, 2021 + 1)
 
+# this will run by default
 rule default_rule:
     input: 
         "data/processed/ghcnd_exceedances.csv",
-        expand("data/processed/berkeleyearth/{var}.nc", var=["TMIN", "TMAX"]),
         "data/processed/era5/exceedance.nc",
+        "data/processed/berkeleyearth/hdd.nc",
+        "data/raw/eia/gnovember_generator2020.xlsx",
 
 # use the API to download hourly ERA5 temperature data
 # you will get an error unless you register for account; see README.md
-ERA_YEARS = np.arange(1950, 2021+1)
 rule get_era5:
     input: script="scripts/get_era5.py"
     output: "data/processed/era5/temp_hourly_{year}.nc"
@@ -24,6 +34,7 @@ rule era5_hdd:
     output: "data/processed/era5/hdd_{year}.nc"
     shell: "python {input.script} -i {input.infile} -o {output}"
 
+# calculate lagged return periods using the ERA5 data
 rule era5_return:
     input:
         script="scripts/era5_return.py",
@@ -31,7 +42,7 @@ rule era5_return:
     output: "data/processed/era5/exceedance.nc"
     shell: "python {input.script} -i {input.infiles} -o {output}"
 
-# Download the raw berkeley earth temperature data: http://berkeleyearth.org/data/
+# Download the raw berkeley earth temperature data
 rule get_berkeley_earth:
     output: "data/raw/berkeleyearth/{var}_{decade}.nc"
     shell: "wget -O {output} http://berkeleyearth.lbl.gov/auto/Global/Gridded/Complete_{wildcards.var}_Daily_LatLong1_{wildcards.decade}.nc"
@@ -44,7 +55,7 @@ rule aggregate_berkeley_earth:
     output: "data/processed/berkeleyearth/{var}.nc"
     shell: "python {input.script} -i {input.files} -o {output}"
 
-# convert berkeley earth data to daily heating degree days
+# convert berkeley earth data to daily heating degree days (degrees F)
 rule berkeley_earth_hdd:
     input:
         script = "scripts/berkeley_earth_hdd.py",
@@ -79,3 +90,8 @@ rule historical_exceedance:
         stations = "data/processed/ghcnd_valid.csv",
     output: "data/processed/ghcnd_exceedances.csv"
     shell: "python {input.script} -i {input.stations} -o {output}"
+
+# US EIA Preliminary Monthly Electric Generator Inventory (based on Form EIA-860M as a supplement to Form EIA-860)
+rule eia_data:
+    output: "data/raw/eia/gnovember_generator2020.xlsx"
+    shell: "wget -O {output} https://www.eia.gov/electricity/data/eia860m/xls/november_generator2020.xlsx"
