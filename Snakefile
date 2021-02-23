@@ -17,6 +17,7 @@ rule default_rule:
         "data/processed/ghcnd_exceedances.csv",
         "data/processed/era5/exceedance.nc",
         "data/processed/berkeleyearth/hdd.nc",
+        "data/processed/berkeleyearth/TAVG.nc",
         "data/raw/eia/gnovember_generator2020.xlsx",
 
 # use the API to download hourly ERA5 temperature data

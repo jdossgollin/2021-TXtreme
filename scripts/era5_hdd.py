@@ -26,13 +26,21 @@ def main() -> None:
     if "expver" in era5.dims:
         era5 = era5.mean(dim="expver")
 
-    era5 = (era5 - 273) * 9 / 5 + 32  # Kelvin to F
+    # convert Kelvin to F
+    era5 = (era5 - 273) * 9 / 5 + 32
 
-    # heating degree days
-    hdd = np.maximum(BASE_TEMP - era5, 0)
-    hdd = hdd.resample(time="1D").mean()
-    hdd.name = "HDD"
-    hdd.to_netcdf(args.outfile, format="NETCDF4")
+    # heating degree hours
+    heat_deg_hours = xr.apply_ufunc(np.maximum, BASE_TEMP - era5, 0)
+
+    # save *daily* data
+    xr.Dataset(
+        {
+            "HDD": heat_deg_hours.resample(time="1D").mean(),
+            "tmin": era5.resample(time="1D").min(),
+            "tmax": era5.resample(time="1D").max(),
+            "tavg": era5.resample(time="1D").mean(),
+        }
+    ).to_netcdf(args.outfile, format="NETCDF4")
 
 
 if __name__ == "__main__":
