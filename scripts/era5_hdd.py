@@ -37,7 +37,7 @@ def main() -> None:
     temp = temp.compute()
 
     # heating degree days
-    heat_deg_days = xr.apply_ufunc(np.maximum, BASE_TEMP - temp, 0)
+    heating_demand = xr.apply_ufunc(np.maximum, BASE_TEMP - temp, 0)
 
     # now get the population data
     population_density = (
@@ -46,18 +46,15 @@ def main() -> None:
         .assign_coords(pop_year=("raster", GPWV4_YEARS))
         .drop_vars("raster")
         .rename({"raster": "pop_year"})
-        .interp_like(heat_deg_days)  # interpolate onto HDD grid
+        .interp_like(heating_demand)  # interpolate onto HDD grid
     )
     population_density["pop_year"] = np.array(GPWV4_YEARS)
-
-    # combine the data sets -- they have the same grid now!
-    pop_hdd = population_density * heat_deg_days
 
     # save weighted and unweighted HDD
     xr.Dataset(
         {
-            "hdd_pop_weighted": pop_hdd,
-            "hdd_unweighted": heat_deg_days,
+            "pop_density": population_density,
+            "heating_demand": heating_demand,
         }
     ).to_netcdf(args.outfile, format="NETCDF4")
 
