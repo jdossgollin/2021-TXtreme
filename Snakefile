@@ -18,7 +18,7 @@ rule default_rule:
         "fig/ERCOT_HDD_unweighted.pdf",
         "fig/ERCOT_HDD_weighted2020.pdf",
         "fig/historic_events_era5.pdf",
-        "fig/historic_events_era5_TX.jpeg",
+        "fig/historic_events_era5_TX.pdf",
         "fig/historic_events_bk.pdf",
         "fig/local_rt_ghcnd.pdf",
         "fig/local_rt_era5.pdf",
@@ -150,7 +150,7 @@ rule historic_extremes:
         "data/processed/berkeleyearth/TAVG.nc",
     output:
         "fig/historic_events_era5.pdf",
-        "fig/historic_events_era5_TX.jpeg",
+        "fig/historic_events_era5_TX.pdf",
         "fig/historic_events_bk.pdf"
     notebook: "scripts/historic_extremes.ipynb"
 
