@@ -15,8 +15,10 @@ ERA_YEARS = np.arange(1950, 2022)
 # the Jupyter notebooks
 rule default_rule:
     input: 
-        "fig/ERCOT_HDD_unweighted.pdf",
-        "fig/ERCOT_HDD_weighted2020.pdf",
+        "fig/ERCOT_HDD_IDF_MLE_popweighted.pdf",
+        "fig/ERCOT_HDD_IDF_MLE_unweighted.pdf",
+        "fig/ERCOT_HDD_IDF_plotpos_popweighted.pdf",
+        "fig/ERCOT_HDD_IDF_plotpos_unweighted.pdf",
         "fig/historic_events_era5.pdf",
         "fig/historic_events_era5_TX.pdf",
         "fig/historic_events_bk.pdf",
@@ -139,8 +141,10 @@ rule hdd_idf:
     input:
         "data/processed/era5/tx/hdd_ercot.nc",
     output:
-        "fig/ERCOT_HDD_unweighted.pdf",
-        "fig/ERCOT_HDD_weighted2020.pdf",
+        "fig/ERCOT_HDD_IDF_MLE_popweighted.pdf",
+        "fig/ERCOT_HDD_IDF_MLE_unweighted.pdf",
+        "fig/ERCOT_HDD_IDF_plotpos_popweighted.pdf",
+        "fig/ERCOT_HDD_IDF_plotpos_unweighted.pdf",
     notebook: "scripts/hdd_idf.ipynb"
 
 rule historic_extremes:
