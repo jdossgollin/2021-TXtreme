@@ -15,15 +15,13 @@ ERA_YEARS = np.arange(1950, 2022)
 # the Jupyter notebooks
 rule default_rule:
     input: 
-        "data/processed/era5/conus/daily_summaries.nc", 
-        "data/processed/era5/tx/daily_summaries.nc",
-        "data/processed/era5/tx/pop_hdd.nc",
-        "data/processed/era5/tx/hdd_ercot.nc",
-        "data/processed/ghcnd/return_periods.csv",
-        "data/processed/era5/tx_return_period.nc",
-        "data/processed/berkeleyearth/hdd.nc",
-        "data/processed/berkeleyearth/TAVG.nc",
-        "data/raw/eia/november_generator2020.xlsx",
+        "fig/ERCOT_HDD_unweighted.pdf",
+        "fig/ERCOT_HDD_weighted2020.pdf",
+        "fig/historic_events_era5.pdf",
+        "fig/historic_events_era5_TX.jpeg",
+        "fig/historic_events_bk.pdf",
+        "fig/local_rt_ghcnd.pdf",
+        "fig/local_rt_era5.pdf",
 
 # use the API to download hourly ERA5 temperature data over Texas
 # you will get an error unless you register for account; see README.md
@@ -133,3 +131,38 @@ rule historical_exceedance:
 rule eia_data:
     output: "data/raw/eia/november_generator2020.xlsx"
     shell: "wget -O {output} https://www.eia.gov/electricity/data/eia860m/xls/november_generator2020.xlsx"
+
+#--------------------------------------------------------------------------
+#--------------------CREATE PLOTS IN JUPYTER NOTEBOOKS---------------------
+#--------------------------------------------------------------------------
+rule hdd_idf:
+    input:
+        "data/processed/era5/tx/hdd_ercot.nc",
+    output:
+        "fig/ERCOT_HDD_unweighted.pdf",
+        "fig/ERCOT_HDD_weighted2020.pdf",
+    notebook: "scripts/hdd_idf.ipynb"
+
+rule historic_extremes:
+    input:
+        "data/processed/era5/conus/daily_summaries.nc",
+        "data/processed/era5/tx/daily_summaries.nc",
+        "data/processed/berkeleyearth/TAVG.nc",
+    output:
+        "fig/historic_events_era5.pdf",
+        "fig/historic_events_era5_TX.jpeg",
+        "fig/historic_events_bk.pdf"
+    notebook: "scripts/historic_extremes.ipynb"
+
+rule local_return_period:
+    input:
+        "data/processed/ghcnd/return_periods.csv",
+        "data/raw/ghcnd_stations.txt",
+        "data/processed/era5/tx_return_period.nc",
+        "data/raw/eia/november_generator2020.xlsx",
+        "data/raw/gpwv4/gpw_v4_population_density_rev11_2pt5_min.nc",
+        "data/raw/interconnects/TexasInterconnect.shp",
+    output:
+        "fig/local_rt_ghcnd.pdf",
+        "fig/local_rt_era5.pdf",
+    notebook: "scripts/local_return_period.ipynb"
