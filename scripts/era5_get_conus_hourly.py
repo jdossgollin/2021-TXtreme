@@ -7,6 +7,9 @@ import argparse
 import cdsapi
 import numpy as np
 
+X0, X1 = (-125, -65)
+Y0, Y1 = (25, 50)
+
 
 def main() -> None:
     """Run everything"""
@@ -61,9 +64,9 @@ def main() -> None:
                 "22:00",
                 "23:00",
             ],
-            "area": [38, -108, 25, -92],
+            "area": [Y1, X0, Y0, X1],
             "format": "netcdf",
-            "grid": [0.25, 0.25],
+            "grid": [2.5, 2.5],
         },
         args.outfile,
     )

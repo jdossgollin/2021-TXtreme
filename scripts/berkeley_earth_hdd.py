@@ -20,7 +20,9 @@ def main() -> None:
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
-    t_hdd = (xr.open_dataarray(args.tmin) + xr.open_dataarray(args.tmax)) / 2
+    t_hdd = (
+        xr.open_dataset(args.tmin)["temp_f"] + xr.open_dataset(args.tmax)["temp_f"]
+    ) / 2
     hdd = np.maximum(BASE_TEMP - t_hdd, 0).resample(time="1D").mean()
     hdd.name = "HDD"
 

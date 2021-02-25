@@ -15,15 +15,16 @@ def parse_file(fname: str) -> xr.Dataset:
         latitude=slice(25, 50), longitude=slice(-125, -65)
     )
     bkds["time"] = pd.to_datetime(bkds[["year", "month", "day"]].to_dataframe())
-    climatology = (
+    climatology_c = (
         bkds["climatology"]
         .sel(day_number=np.int_(bkds["day_of_year"] - 1))
         .rename({"day_number": "time"})
     )
-    climatology["time"] = bkds["time"]
-    temp_c = bkds["temperature"] + climatology
-    temp_f = temp_c * 9 / 5 + 32
-    return temp_f
+    climatology_c["time"] = bkds["time"]
+    anomaly_c = bkds["temperature"]
+    temp_c = anomaly_c + climatology_c
+
+    return xr.Dataset(dict(anomaly_f=anomaly_c * 9 / 5, temp_f=temp_c * 9 / 5 + 32))
 
 
 def main() -> None:

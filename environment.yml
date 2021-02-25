@@ -10,6 +10,7 @@ dependencies:
   - cartopy
   - cdsapi
   - dask
+  - geopandas
   - jupyterlab
   - matplotlib
   - mypy
@@ -18,6 +19,7 @@ dependencies:
   - numpy
   - openpyxl
   - pandas
+  - pip
   - pylint
   - regionmask
   - scipy
@@ -25,3 +27,5 @@ dependencies:
   - snakemake
   - tqdm
   - xarray
+  - pip:
+      - matplotlib-label-lines

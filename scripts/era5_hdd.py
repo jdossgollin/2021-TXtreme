@@ -1,5 +1,6 @@
 """
-Get the ERA5 daily heating degree days (degrees F)
+Compute minimum, maximum, mean, and anomaly (of mean) daily summaries of
+temperature from ERA5
 """
 
 import argparse
@@ -8,6 +9,7 @@ import numpy as np
 import xarray as xr
 
 BASE_TEMP = 68
+GPWV4_YEARS = [2000, 2005, 2010, 2015, 2020]
 
 
 def main() -> None:
@@ -15,30 +17,47 @@ def main() -> None:
 
     # parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--infile", type=str)
+    parser.add_argument("--temperature", nargs="+", type=str)
+    parser.add_argument("--population", type=str)
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
-    era5 = xr.open_dataset(args.infile)["t2m"]
+    # get the temperature data
+    temp = xr.open_mfdataset(args.temperature)["t2m"]
 
     # combine the two experiments
     # see https://confluence.ecmwf.int/pages/viewpage.action?pageId=173385064
-    if "expver" in era5.dims:
-        era5 = era5.mean(dim="expver")
+    if "expver" in temp.dims:
+        temp = temp.mean(dim="expver")
 
     # convert Kelvin to F
-    era5 = (era5 - 273) * 9 / 5 + 32
+    temp = (temp - 273) * 9 / 5 + 32
 
-    # heating degree hours
-    heat_deg_hours = xr.apply_ufunc(np.maximum, BASE_TEMP - era5, 0)
+    # force Dask to compute
+    temp = temp.compute()
 
-    # save *daily* data
+    # heating degree days
+    heat_deg_days = xr.apply_ufunc(np.maximum, BASE_TEMP - temp, 0)
+
+    # now get the population data
+    population_density = (
+        xr.open_dataarray(args.population)
+        .sel(raster=slice(1, 5))
+        .assign_coords(pop_year=("raster", GPWV4_YEARS))
+        .drop_vars("raster")
+        .rename({"raster": "pop_year"})
+        .interp_like(heat_deg_days)  # interpolate onto HDD grid
+    )
+    population_density["pop_year"] = np.array(GPWV4_YEARS)
+
+    # combine the data sets -- they have the same grid now!
+    pop_hdd = population_density * heat_deg_days
+
+    # save weighted and unweighted HDD
     xr.Dataset(
         {
-            "HDD": heat_deg_hours.resample(time="1D").mean(),
-            "tmin": era5.resample(time="1D").min(),
-            "tmax": era5.resample(time="1D").max(),
-            "tavg": era5.resample(time="1D").mean(),
+            "hdd_pop_weighted": pop_hdd,
+            "hdd_unweighted": heat_deg_days,
         }
     ).to_netcdf(args.outfile, format="NETCDF4")
 

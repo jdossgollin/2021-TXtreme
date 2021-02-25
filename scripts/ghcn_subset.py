@@ -31,12 +31,14 @@ REQUIRED_DATES = [
     "2021-02-15",
     "2021-02-16",
     "2021-02-17",
+    "2021-02-18",
+    "2021-02-19",
 ]
 
 
 def is_valid_record(stnid: str) -> bool:
     """Does an ID have sufficient data?"""
-    dat = get_ghcn_data(stnid)
+    dat = get_ghcn_data(stnid).dropna()
     conditions = [
         dat.shape[0] >= MIN_OBS,
         dat.index.max() >= to_datetime(MIN_DATE),
@@ -67,8 +69,12 @@ def main() -> None:
     # get the IDs that have sufficient data
     valid_ids = [stnid for stnid in tqdm(stations["ID"]) if is_valid_record(stnid)]
 
+    # count the number of obs in each
+    n_obs = [get_ghcn_data(stnid).dropna().shape[0] for stnid in valid_ids]
+
     # save the valid stations
     valid_stations = stations.loc[lambda df: df["ID"].isin(valid_ids)]
+    valid_stations["n_obs"] = n_obs
     valid_stations.to_csv(args.outfile, index=False)
 
 

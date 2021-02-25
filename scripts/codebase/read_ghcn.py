@@ -3,6 +3,9 @@ File: read_ghcn.py
 Author: Ned Haughton (https://gitlab.com/nedcr)
 Description: Code for reading GHCN dly file data
 Source: https://gitlab.com/snippets/1838910
+
+Reproduced here with permission (granted via GitLab comment Feb 19, 2021 12:41am CST)
+and modified by James Doss-Gollin
 """
 
 import pandas as pd

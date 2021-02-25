@@ -2,7 +2,31 @@
 
 How extreme was the cold snap in Texas?
 
-## Installation
+**PRELIMINARY** analysis by
+
+- Dr. James Doss-Gollin, Rice University
+- Dr. David J. Farnham, Carnegie Institute for Science
+- Dr. Upmanu Lall, Columbia University
+- Dr. Vijay Modi, Columbia University
+
+## Summary of Findings
+
+## Reproducibility
+
+We strive to make our work accessible to an inquiring public and to the scientific community.
+Thus we use only publicly available data sets.
+All code is posted on this repository.
+
+### To Examine
+
+You probably want to start by looking at our code.
+All code is in the `scripts` folder.
+In that folder you will find another directory called `codebase`.
+This is imported by some of the scripts.
+
+### To Run
+
+Installation
 
 1. `git clone` the repository
 1. Install conda
