@@ -5,10 +5,12 @@ temperature from ERA5
 
 import argparse
 
+from pandas import Timedelta
 import xarray as xr
 
 CLIMATOLOGY_SDATE = "1979-12-31"
 CLIMATOLOGY_EDATE = "2020-02-28"
+TIME_ZONE_OFFSET = 6  # group by 1 day in Texas, not UTC
 
 
 def calculate_anomaly(da, groupby_type="time.month"):
@@ -36,6 +38,9 @@ def main() -> None:
     # see https://confluence.ecmwf.int/pages/viewpage.action?pageId=173385064
     if "expver" in temp.dims:
         temp = temp.mean(dim="expver")
+
+    # adjust time
+    temp["time"] = temp["time"] + Timedelta(TIME_ZONE_OFFSET, unit="H")
 
     # convert Kelvin to F
     temp = (temp - 273) * 9 / 5 + 32
