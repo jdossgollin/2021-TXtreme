@@ -24,11 +24,11 @@ def main() -> None:
     hdd = xr.open_dataset(args.hdd).rename({"longitude": "lon", "latitude": "lat"})
 
     # read the mask
-    ercot = gp.read_file(args.boundary)
+    ercot = gp.read_file(args.boundary).loc[lambda df: df["NERC"] == "TRE"]
     mask = regionmask.mask_geopandas(ercot, hdd)
 
     # mask and clip
-    masked = hdd.where(mask == 0, drop=True)
+    masked = hdd.where(~mask.isnull(), drop=True)
 
     # create weights
     pop_weights = hdd["pop_density"].fillna(0)

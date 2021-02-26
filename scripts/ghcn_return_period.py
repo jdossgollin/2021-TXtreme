@@ -20,7 +20,11 @@ def calc_return_period(stnid: str) -> pd.Series:
     the historical record using an empirical estimator
     """
 
-    temp = get_ghcn_data(stnid).assign(TAVG=lambda df: (df["TMAX"] + df["TMIN"] / 2))
+    temp = (
+        get_ghcn_data(stnid)
+        .assign(TAVG=lambda df: (df["TMAX"] + df["TMIN"] / 2))
+        .dropna()
+    )
 
     # get rolling minima
     temp_roll = pd.DataFrame(
@@ -28,22 +32,24 @@ def calc_return_period(stnid: str) -> pd.Series:
     ).dropna()
 
     # define years starting in the summer so winter seasons are grouped together
-    # if there are inadequate obs for a given year, throw it
-    temp_roll["temp_year"] = temp_roll.index.year + np.int_(temp_roll.index.month > 7)
-    temp_annual = (
-        temp_roll.groupby("temp_year")
-        .agg(lambda x: np.min(x) if len(x) > 300 else np.nan)
-        .dropna()
+    temp_roll["winter_season"] = temp_roll.index.year + np.int_(
+        temp_roll.index.month > 7
     )
-    temp_21 = temp_roll.loc["2021-01-01":"2021-03-01"].min()
-    temp_hist = temp_annual.loc[:2020]
-    exceedance = pd.Series(
-        {
-            col: cold_return_period(temp_21[col], temp_hist[col])
-            for col in temp_annual.columns
-        }
-    )
-    exceedance.name = stnid
+    temp_annual = temp_roll.groupby("winter_season").min().dropna()
+
+    temp_hist = temp_annual.loc[0:2020, :]
+    temp_21 = temp_annual.loc[2021]
+
+    exceedance = pd.DataFrame(
+        {"stnid": [stnid]},
+    ).set_index("stnid")
+
+    for dur in DURATIONS:
+        col = f"temp_{dur}_days"
+        exceedance[col] = cold_return_period(temp_21[col], temp_hist[col])
+        was_record = temp_21[col] < temp_hist[col].min()
+        exceedance[f"record_{dur}_days"] = was_record
+
     return exceedance
 
 
@@ -58,8 +64,8 @@ def main() -> None:
 
     stations = pd.read_csv(args.infile)["ID"].unique()
     exceedance_probs = pd.concat(
-        [calc_return_period(stnid) for stnid in tqdm(stations)], axis=1
-    ).T
+        [calc_return_period(stnid) for stnid in tqdm(stations)], axis=0
+    )
     exceedance_probs.to_csv(args.outfile)
 
 

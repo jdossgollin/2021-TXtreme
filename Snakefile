@@ -67,7 +67,7 @@ rule era5_tx_hdd:
 rule hdd_ercot:
     input:
         script="scripts/hdd_ercot.py",
-        interconnect="data/raw/interconnects/TexasInterconnect.shp",
+        interconnect="data/raw/eia/regions_NERC/NercRegions_201907.shp",
         hdd="data/processed/era5/tx/pop_hdd.nc"
     output: "data/processed/era5/tx/hdd_ercot.nc"
     shell: "python {input.script} --boundary {input.interconnect} --hdd {input.hdd} -o {output}"
@@ -77,7 +77,7 @@ rule era5_return:
     input:
         script="scripts/era5_return.py",
         infiles = expand("data/raw/era5/tx/temp_hourly_{year}.nc", year=ERA_YEARS),
-    output: "data/processed/era5/tx_return_period.nc"
+    output: "data/processed/era5/tx/return_period.nc"
     shell: "python {input.script} -i {input.infiles} -o {output}"
 
 # Download the raw berkeley earth temperature data
@@ -162,10 +162,10 @@ rule local_return_period:
     input:
         "data/processed/ghcnd/return_periods.csv",
         "data/raw/ghcnd_stations.txt",
-        "data/processed/era5/tx_return_period.nc",
+        "data/processed/era5/tx/return_period.nc",
         "data/raw/eia/november_generator2020.xlsx",
         "data/raw/gpwv4/gpw_v4_population_density_rev11_2pt5_min.nc",
-        "data/raw/interconnects/TexasInterconnect.shp",
+        "data/raw/eia/regions_NERC/NercRegions_201907.shp",
     output:
         "fig/local_rt_ghcnd.pdf",
         "fig/local_rt_era5.pdf",
