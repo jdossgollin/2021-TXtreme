@@ -24,6 +24,7 @@ rule default_rule:
         "fig/historic_events_bk.pdf",
         "fig/local_rt_ghcnd.pdf",
         "fig/local_rt_era5.pdf",
+        "fig/HDD_pop_weighted_ts.pdf",
 
 # use the API to download hourly ERA5 temperature data over Texas
 # you will get an error unless you register for account; see README.md
@@ -170,3 +171,8 @@ rule local_return_period:
         "fig/local_rt_ghcnd.pdf",
         "fig/local_rt_era5.pdf",
     notebook: "scripts/local_return_period.ipynb"
+
+rule HDD_pop_weighted_ts:
+    input: "data/processed/era5/tx/hdd_ercot.nc"
+    output: "fig/HDD_pop_weighted_ts.pdf"
+    notebook: "scripts/time_series.ipynb"
