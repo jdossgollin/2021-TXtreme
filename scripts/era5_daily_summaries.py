@@ -8,19 +8,9 @@ import argparse
 from pandas import Timedelta
 import xarray as xr
 
-CLIMATOLOGY_SDATE = "1979-12-31"
-CLIMATOLOGY_EDATE = "2020-02-28"
+from codebase.calc import calculate_anomaly
+
 TIME_ZONE_OFFSET = 6  # group by 1 day in Texas, not UTC
-
-
-def calculate_anomaly(da, groupby_type="time.month"):
-    """From Xarray docs"""
-    clim = (
-        da.sel(time=slice(CLIMATOLOGY_SDATE, CLIMATOLOGY_EDATE))
-        .groupby(groupby_type)
-        .mean(dim="time")
-    )
-    return da.groupby(groupby_type) - clim
 
 
 def main() -> None:
@@ -50,8 +40,8 @@ def main() -> None:
 
     # calculate daily climatology and anomalies
     daily_anomaly = calculate_anomaly(
-        temp.resample(time="1D").mean(), groupby_type="time.month"
-    )
+        temp.resample(time="1D").mean(), groupby_type="time.season"
+    )  # time.season ==> DJF
 
     # save *daily* data
     xr.Dataset(

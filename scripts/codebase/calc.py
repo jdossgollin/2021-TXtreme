@@ -43,3 +43,9 @@ def cold_return_period(y: float, x: np.ndarray) -> float:
     are annual MINIMA rather than MAXIMA
     """
     return return_period(-y, -x)
+
+
+def calculate_anomaly(da, groupby_type="time.month"):
+    """Function to calculate anomalies from xarray docs"""
+    clim = da.groupby(groupby_type).mean(dim="time")
+    return da.groupby(groupby_type) - clim

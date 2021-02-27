@@ -8,9 +8,13 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
+from codebase.calc import calculate_anomaly
+
 
 def parse_file(fname: str) -> xr.Dataset:
     """Read in one of the data files"""
+
+    # step 1: figure out what the underlying temperature value is
     bkds = xr.open_dataset(fname).sel(
         latitude=slice(25, 50), longitude=slice(-125, -65)
     )
@@ -24,7 +28,10 @@ def parse_file(fname: str) -> xr.Dataset:
     anomaly_c = bkds["temperature"]
     temp_c = anomaly_c + climatology_c
 
-    return xr.Dataset(dict(anomaly_f=anomaly_c * 9 / 5, temp_f=temp_c * 9 / 5 + 32))
+    # step 2: re-derive climatology using consistent formulat & calc new anomaly
+    anomaly_c2 = calculate_anomaly(temp_c, groupby_type="time.season")
+
+    return xr.Dataset(dict(anomaly_f=anomaly_c2 * 9 / 5, temp_f=temp_c * 9 / 5 + 32))
 
 
 def main() -> None:
