@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007)
 
-Welcome to the code repository for the paper "How unprecedented was the February 2021 Texascold snap?" by:
+Welcome to the code repository for the paper "How unprecedented was the February 2021 Texas cold snap?" by:
 
 - Dr. James Doss-Gollin, Rice University
 - Dr. David J. Farnham, Carnegie Institute for Science
