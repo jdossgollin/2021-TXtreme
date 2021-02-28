@@ -14,7 +14,17 @@ We have posted a preprint on EarthArxiv, available [here](https://eartharxiv.org
 Please cite as
 
 ```bibtex
-asdf
+@unpublished{doss-gollin_txtreme:2021,
+  title = {How Unprecedented Was the {{February}} 2021 {{Texascold}} Snap?},
+  shorttitle = {{{TXtreme}}},
+  author = {{Doss-Gollin}, James and Farnham, David J. and Lall, Upmanu and Modi, Vijay},
+  year = {2021},
+  month = feb,
+  copyright = {CC BY Attribution 4.0 International},
+  language = {en},
+  preprint = {https://eartharxiv.org/repository/view/2122/},
+  repo = {https://github.com/jdossgollin/2021-TXtreme}
+}
 ```
 
 ## Reproducibility
