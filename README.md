@@ -9,7 +9,13 @@ Welcome to the code repository for the paper "How unprecedented was the February
 - Dr. Upmanu Lall, Columbia University
 - Dr. Vijay Modi, Columbia University
 
-Further documentation on this README is forthcoming.
+This paper is under review and has not yet undergone peer review.
+We have posted a preprint on EarthArxiv, available [here](https://eartharxiv.org/repository/view/2122/).
+Please cite as
+
+```bibtex
+asdf
+```
 
 ## Reproducibility
 
@@ -19,23 +25,62 @@ All code is posted on this repository.
 
 ### To Examine
 
-You probably want to start by looking at our code.
-All code is in the `scripts` folder.
-In that folder you will find another directory called `codebase`.
-This is imported by some of the scripts.
+If you want to browse our code, this section is for you.
+
+You will find four Jupyter notebooks in `scripts/`.
+You can open them and they will render in GitHub.
+This will show you figures in our paper with some additional commentary.
+
+### To dig deep
+
+Our Jupyter notebooks use outputs from other scripts to create visualizations.
+If you want to dig into those scripts, this section is for you.
+
+We use [Snakemake](snakemake.readthedocs.io/) to organize or code.
+The `Snakefile` organizes all inputs and provides comments.
+Some commands in the `Snakefile` use `wget` to access data.
+All others run python scripts with command line arguments.
+You will find these scripts in `scripts/`.
+
+Some functions are called across more than one script.
+To provide consistency, shared functions are placed in `scripts/codebase`.
 
 ### To Run
 
-Installation
+If you want to run or modify our results, this section is for you.
+Please note: **running this will require approximately 60GB of disk space**.
+You have been warned!
+*All commands here assume standard UNIX terminal; Windows may be subtly different*.
 
-1. `git clone` the repository
-1. Install conda
-1. `conda env create --file environment.yml` (for dramatic performance improvements you may replace `conda` with [`mamba`](https://github.com/mamba-org/mamba))
-1. `conda activate txtreme`
+First, `git clone` the repository to your machine.
 
-## To Run
+Next, you will need to install conda (we recommend miniconda) and `wget`.
 
-1. Download the GPWV4 data
-1. Register for [a CDSAPI key](https://cds.climate.copernicus.eu/api-how-to) with the ECMWF
+Next, you need to create th conda environment:
 
-`snakemake --n <some number>`; at least 2 is advised
+```shell
+conda env create --file environment.yml
+```
+
+If this gives you any trouble, you can see the exact versions of packages we used in `conda.txt`.
+Once you have created the environment, then
+
+```shell
+conda activate txtreme
+```
+
+to activate it.
+In order to run, you will need to do two things to access required data.
+
+1. Download the GPWV4 data. See instructions in [`data/raw/gpwv4/README.md`](data/raw/gpwv4/README.md).
+1. Register for [a CDSAPI key](https://cds.climate.copernicus.eu/api-how-to) with the ECMWF. This key is required for you to access this data.
+
+Now you can run!
+
+```shell
+snakemake --n <some number>
+```
+
+where `<some number>` specifies the number of cores to use.
+More cores will run faster.
+Again, note that running will use nearly 60GB of disk space!
