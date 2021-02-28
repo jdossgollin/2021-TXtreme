@@ -2,14 +2,14 @@
 
 [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007)
 
-How extreme was the cold snap in Texas?
-
-Authors:
+Welcome to the code repository for the paper "How unprecedented was the February 2021 Texascold snap?" by:
 
 - Dr. James Doss-Gollin, Rice University
 - Dr. David J. Farnham, Carnegie Institute for Science
 - Dr. Upmanu Lall, Columbia University
 - Dr. Vijay Modi, Columbia University
+
+Further documentation on this README is forthcoming.
 
 ## Reproducibility
 
