@@ -1,5 +1,4 @@
-# 2021-texas-extreme-temp
-
+# 2021-TXtreme
 
 [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007)
 
