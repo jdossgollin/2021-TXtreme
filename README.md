@@ -13,9 +13,8 @@ Welcome to the code repository for the paper "How unprecedented was the February
 - Dr. Upmanu Lall, Columbia University
 - Dr. Vijay Modi, Columbia University
 
-This paper is under review and has not yet undergone peer review.
-We have posted a preprint on EarthArxiv, available [here](https://eartharxiv.org/repository/view/2122/).
-Please cite as
+*This paper has not yet undergone peer review,* but our preprint is available on [EarthArxiv](https://eartharxiv.org/repository/view/2122/).
+Please cite this non-reviewed manuscript as
 
 ```bibtex
 @unpublished{doss-gollin_txtreme:2021,
