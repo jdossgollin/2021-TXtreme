@@ -3,6 +3,7 @@
 <a href="https://eartharxiv.org/repository/view/2122/">
 <img src="https://img.shields.io/static/v1?label=&message=Preprint&color=purple&logo=arxiv&style=flat" alt="Link">
 </a>
+
 [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007)
 
 Welcome to the code repository for the paper "How unprecedented was the February 2021 Texas cold snap?" by:
