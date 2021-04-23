@@ -1,0 +1,85 @@
+\documentclass{ar2rc}
+
+\usepackage{url}
+\usepackage{siunitx}
+
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{color}
+\newcommand{\jdg}[1]{\todo[color=red!30]{#1}}
+\newcommand{\all}[1]{\todo[color=blue!30]{#1}}
+
+\hypersetup{hidelinks}
+
+\title{How unprecedented was the February 2021 Texas cold snap?}
+\author{James Doss-Gollin, David J. Farnham, Upmanu Lall, and Vijay Modi}
+\journal{Environmental Research Letters}
+
+\begin{document}
+
+\maketitle
+
+\listoftodos
+
+\section{Referee \#1}
+
+\RC  This is an excellent, timely analysis. The authors are right to point to the need for more in depth studies on how cascading failures occurred during the 2021 Texas freeze, and the steps required to minimize their impacts in the future. But this is a much needed, early contribution, and very well done. I don't have any major criticisms of the work, which is well organized and rigorous.
+
+\AR Thank you for your comments. We agree that this points to a need for more in depth studies, particularly related to cascading failures of natural gas and electricity systems but also to failure of water and other systems.
+
+\subsection{Some minor comments:}
+
+\RC Considering I think this paper will be widely read and cited, one general comment is that I felt like the citations were a little light in the introduction, especially regarding the 2021 freeze itself.
+
+\AR This is a point that reviewer \#2 has also brought up.\all{add some citations}
+
+\RC `Texas interconnect' (which I assume is the Texas Interconnection bulk electric power system administered by ERCOT) is used several times but (I don't think) ever defined; many folks will not know what this refers to. If you added a brief definition it would help. If this does refer to the grid, then an additional comment is that I've never heard it referred to as the Interconnect, but rather the Interconnection.
+
+\AR This is a helpful comment. The Interconnection is a better term and we have revised it throughout.\jdg{Change language to always say TX Interconnection}\jdg{define Texas Interconnection}. This will clarify the document and facilitate understanding.
+
+\RC Regarding the definition of a HDD/CDD: More frequently 65 degrees is used, I think.
+
+\AR Do we need to do any analysis, or just reply that it doesn't matter?\all{Assess}
+
+\RC On the difficulty of estimating supply side risk -- is it possible at this point to map the locations of plants that lost functionality?
+
+\AR This is a helpful suggestion. When we submitted the manuscript, this data was not available. However, ERCOT has since released data on generation failure.\jdg{Download this data and update the map}
+
+\RC In the discussion, you mention the 1983 event as being one of comparable severity, and then talk about the grid's failure in 2021. I don't know if this was your intention, but  when I read this sentence the first time I took it to mean the grid is *more* vulnerable now. I think you could reasonably make that case with greater electrification of heating. But I also wondered about coal-to-gas switching, and whether 1983 would have likely been a different fleet of power plants that were perhaps less likely to lose useable capacity during cold weather.
+
+\AR Thank you for the interesting and thought-provoking comment.\all{Discuss: do we have thoughts?}
+
+\section{Referee \#2}
+
+\RC This paper investigates whether the Texas deep freeze event was a black swan event, or if it should have been predicted from previous cold snaps. The authors compute the population weighted temperature excursion below \SI{68}{\degree F} as a proxy for heating demand and use that to determine aggregate heating demand for 2021. Overall the authors find that demand for previous storms was more intense than the 2021 disaster.
+
+\AR Thank you for this helpful summary.
+
+\RC The introduction is seriously lacking in citations and references. For example, this line ``While polar air excursions are not unusual, they do not typically reach as far south as the Mexican border.'' And a number of others need citations and would benefit from concrete numbers. A question that arises is how many storms have reached the Mexican border in the last 10 years? Line 45-46 on page 1 also needs a citation.
+
+\AR Thank you for this comment. We note that referee \#1 made a similar comment. We have now added refererences\ldots\all{Add more references as noted above}
+
+\RC In the introduction the ``population weighted temperature excursion below \SI{68}{\degree F}'' needs a definition for temperature excursion. Figure 1 is missing citations for the data. What do you mean by days ending? Were these temperatures recorded at a specific time of day? Figure 1 would be improved by adding column headers for the averages (1-day, 3 day, and 5 day).
+
+\AR Thank you for calling to our attention these unclear points. First, we have changed the subplot titles of Figure 1 from ``N days ending YYYY-MM-DD'' to ``YYYY-MM-DD to YYYY-MM-DD'' for clarity. We have supplemented this with column titles. We have also added a reference to the ERA-5 data in the caption.\jdg{update the figure as described}
+
+\RC A weakness of this paper is the lack of comment about the capacity and size of the Texas grid. How does the inferred demand compare to the size of the ERCOT power grid and the interconnection capability over time? We know that the ERCOT grid is larger in 2021 than in 1989, but from Figure 2 there should have been more demand in 1989 than in 2021. Would most of the people have wood stoves? Was the blackout and number of people impacted as large in the past, as it was in 2021?
+
+\AR Thank you for bringing this point to our attention. To minimize confusion, we have clarified our terminology so that ``inferred heating demand'' is not ``inferred heating demand per capita.'' This is reflected throughout the document.\jdg{Update language throughout} However, comparing the actual infrastructure failures across different events (such as 1989) would require understanding and modeling cascading failures of interdependent infrastructure systems, which is beyond the scope of our analysis.
+
+\RC On page 7 line 51 the authors say the Oklahoma recorded some water main breaks and rolling blackouts, but infrastructure impacts were less severe. To strengthen this paper, the authors should provide insights as to why this was the case for OK, and not TX.
+
+\AR Perhaps ``it gets cold there'' but I'd hate to say things without any evidence?\all{Comment}
+
+\RC I understand that a big takeaway from the paper is that the cold temperatures and heat demand could be predicted since there were similar demand numbers from 1989, but one year of similar demand does not eliminate this as a black swan event. From the discussion period it seems that over a 30-year time period this type of event has only happened twice. That seems very rare in my opinion.
+
+\AR Thank you for this comment. Whether it was a ``black swan'' or not depends on a definition of black swan. We have provided a definition and citation for this term.\jdg{Cite Taleb and add definition} Beyond this one instance, we have sought to clarify our language to ask only whether the temperatures were ``unprecedented.'' Since we find that, particularly at the aggregate scale, there were historical events of comparable intensity and duration, we can state that the event ``was not unprecedented.'' We also attempt to quantify return periods. However, we have removed references to terms like ``rare'' or ``surprising'' \jdg{check for these terms} that do not have specific interpretations to minimize any confusion.
+
+\RC The conclusions says that several other storms would have resulted in similar demand. How many?
+
+\AR Thank you for pushing us to be more specific with our claims. The text now reads (\ldots).
+
+\RC This paper needs to tie in the size and capacity of the Texas grid to the demand projections. Without it I believe the claims are overstated.
+
+\AR Thank you for this comment. The first step we have taken is, as noted above, to refer to ``inferred demand for heating per capita'' to emphasize that we are not accounting for population change.\all{anything else we should include?}
+
+\end{document}

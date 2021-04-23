@@ -131,3 +131,5 @@ dmypy.json
 .pyre/
 doc/article.pdf
 doc/coverletter.pdf
+doc/review_response.pdf
+doc/revision.pdf
