@@ -2,6 +2,7 @@
 
 \usepackage{url}
 \usepackage{siunitx}
+\usepackage{natbib}
 
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{color}
@@ -30,11 +31,14 @@
 
 \RC Considering I think this paper will be widely read and cited, one general comment is that I felt like the citations were a little light in the introduction, especially regarding the 2021 freeze itself.
 
-\AR This is a point that reviewer \#2 has also brought up.\all{add some citations}
+\AR This is a point that reviewer \#2 has also brought up. We have added several citations to the introduction. Briefly: \citet{nielsen-gammon_txacc:2011} notes that winter weather is dangerous because it is rare in Texas; \citet{gunter_fishes:1951} describes how a cold event in 1951 caused a significant die-off of fish life in the shallow Gulf Coast; \citet{wu_tx:2021} presents a model of the electricity system and suggests some corrective actions may have been possible;
 
 \RC `Texas interconnect' (which I assume is the Texas Interconnection bulk electric power system administered by ERCOT) is used several times but (I don't think) ever defined; many folks will not know what this refers to. If you added a brief definition it would help. If this does refer to the grid, then an additional comment is that I've never heard it referred to as the Interconnect, but rather the Interconnection.
 
-\AR This is a helpful comment. The Interconnection is a better term and we have revised it throughout.\jdg{Change language to always say TX Interconnection}\jdg{define Texas Interconnection}. This will clarify the document and facilitate understanding.
+\AR This is a helpful comment. The Interconnection is a better term and we have revised it throughout. We also revise the first sentence of the ``data and methods'' section:
+\begin{quote}
+  We use three distinct datasets to analyze temperature minima in \DIFdelbegin \DIFdel{Texas }\DIFdelend \DIFaddbegin \DIFadd{the region covered by the Texas Interconnection bulk electric power system administered by the Electric Reliability Council of Texas (hence ``Texas Interconnection'') }\DIFaddend through the lens of distributed (each grid cell analyzed separately) and aggregated (weighted averages taken across space) extreme values analysis.
+\end{quote}
 
 \RC Regarding the definition of a HDD/CDD: More frequently 65 degrees is used, I think.
 
@@ -46,7 +50,7 @@
 
 \RC In the discussion, you mention the 1983 event as being one of comparable severity, and then talk about the grid's failure in 2021. I don't know if this was your intention, but  when I read this sentence the first time I took it to mean the grid is *more* vulnerable now. I think you could reasonably make that case with greater electrification of heating. But I also wondered about coal-to-gas switching, and whether 1983 would have likely been a different fleet of power plants that were perhaps less likely to lose useable capacity during cold weather.
 
-\AR Thank you for the interesting and thought-provoking comment.\all{Discuss: do we have thoughts?}
+\AR Thank you for the interesting and thought-provoking comment. We can dig into the ERCOT data and look at whether there were substantial differences between coal and gas plants in ERCOT. However, both gas and coal systems \emph{can}, with adequate preparation of the full supply chain, perform in cold temperatures, and our main finding is that the owners and operators of this infrastructure could have anticipated that an event such as that of February 2021 was possible.\all{Vijay will lead a response here}
 
 \section{Referee \#2}
 
@@ -64,15 +68,32 @@
 
 \RC A weakness of this paper is the lack of comment about the capacity and size of the Texas grid. How does the inferred demand compare to the size of the ERCOT power grid and the interconnection capability over time? We know that the ERCOT grid is larger in 2021 than in 1989, but from Figure 2 there should have been more demand in 1989 than in 2021. Would most of the people have wood stoves? Was the blackout and number of people impacted as large in the past, as it was in 2021?
 
-\AR Thank you for bringing this point to our attention. To minimize confusion, we have clarified our terminology so that ``inferred heating demand'' is not ``inferred heating demand per capita.'' This is reflected throughout the document.\jdg{Update language throughout} However, comparing the actual infrastructure failures across different events (such as 1989) would require understanding and modeling cascading failures of interdependent infrastructure systems, which is beyond the scope of our analysis.
+\AR Thank you for bringing this point to our attention. To minimize confusion, we have clarified our terminology so that ``inferred heating demand'' is not ``inferred heating demand per capita.'' This is reflected throughout the document.\jdg{Update figures to reflect this} However, comparing the actual infrastructure failures across different events (such as 1989) would require understanding and modeling cascading failures of interdependent infrastructure systems, which is beyond the scope of our analysis.
 
 \RC On page 7 line 51 the authors say the Oklahoma recorded some water main breaks and rolling blackouts, but infrastructure impacts were less severe. To strengthen this paper, the authors should provide insights as to why this was the case for OK, and not TX.
 
-\AR Perhaps ``it gets cold there'' but I'd hate to say things without any evidence?\all{Comment}
+\AR Perhaps ``it gets cold there'' but I'd hate to say things without any evidence. If there are not definitive references, let's remove this reference.\all{Comment}
 
 \RC I understand that a big takeaway from the paper is that the cold temperatures and heat demand could be predicted since there were similar demand numbers from 1989, but one year of similar demand does not eliminate this as a black swan event. From the discussion period it seems that over a 30-year time period this type of event has only happened twice. That seems very rare in my opinion.
 
-\AR Thank you for this comment. Whether it was a ``black swan'' or not depends on a definition of black swan. We have provided a definition and citation for this term.\jdg{Cite Taleb and add definition} Beyond this one instance, we have sought to clarify our language to ask only whether the temperatures were ``unprecedented.'' Since we find that, particularly at the aggregate scale, there were historical events of comparable intensity and duration, we can state that the event ``was not unprecedented.'' We also attempt to quantify return periods. However, we have removed references to terms like ``rare'' or ``surprising'' \jdg{check for these terms} that do not have specific interpretations to minimize any confusion.
+\AR{
+  Thank you for this helpful comment.
+  We have clarified our language to more clearly reflect our research question, which is to what extent the temperatures were ``unprecedented'' or ``known to be possible.''
+  We also use the term ``extreme'' within the narrow context of addressing questions like ``how extreme was the event'' using statistical extreme value theory, which provides a specific meaning.
+  To ensure clarity and reduce the possibility of misinterpretation, we have removed terms like ``rare,'' ``black swan,'' or ``surprising'' that do not have specific interpretations, as well as  the phrase ``could have been anticipated,'' which could mean either ``known to be possible'' or ``had been forecasted''.
+  For example, we have clarified language in the abstract, introduction, and discussion:
+}
+\begin{quote}
+  This motivates the question: \DIFdelbegin \DIFdel{was the cold }\DIFdelend \DIFaddbegin \DIFadd{were the temperatures }\DIFaddend that contributed to this infrastructure failure \DIFdelbegin \DIFdel{a ``black swan'' that could not have been anticipated}\DIFdelend \DIFaddbegin \DIFadd{beyond what was known to be possible}\DIFaddend , or did historical storms \DIFdelbegin \DIFdel{provide }\DIFdelend \DIFaddbegin \DIFadd{offer }\DIFaddend a precedent?
+\end{quote}
+\begin{quote}
+  It is therefore important to assess whether \DIFdelbegin \DIFdel{the February 2021 cold snap could have been anticipated.
+  }\DIFdelend \DIFaddbegin \DIFadd{historical data offered a precedent for the temperatures observed during February 2021.
+  }\DIFaddend
+\end{quote}
+\begin{quote}
+  Our analysis quantifies the \DIFdelbegin \DIFdel{probability with which temperature extremes }\DIFdelend \DIFaddbegin \DIFadd{frequency with which the temperatures observed during February 2021 }\DIFaddend could have been \DIFdelbegin \DIFdel{anticipated }\DIFdelend \DIFaddbegin \DIFadd{expected to occur }\DIFaddend \emph{a priori}.
+\end{quote}
 
 \RC The conclusions says that several other storms would have resulted in similar demand. How many?
 
@@ -80,6 +101,9 @@
 
 \RC This paper needs to tie in the size and capacity of the Texas grid to the demand projections. Without it I believe the claims are overstated.
 
-\AR Thank you for this comment. The first step we have taken is, as noted above, to refer to ``inferred demand for heating per capita'' to emphasize that we are not accounting for population change.\all{anything else we should include?}
+\AR Thank you for this suggestion. The first step we have taken is, as noted above, to refer to ``inferred demand for heating per capita'' to emphasize that we are not accounting for population change from 1989-2021. Beyond population, changes in such factors as the fraction of heating that is electrified, the distribution of building sizes, and the degree of insulation used will affect total electricity demand. Considering the future, large uncertainties in factors like population and technology (for example, electric vehicles and battery storage) will affect electricity demand during cold snaps. However, modeling these changes and their implications is beyond the scope of this analysis.
+
+\bibliographystyle{agufull}
+\bibliography{references}
 
 \end{document}
