@@ -1,18 +1,16 @@
 """
 Snakefile: see snakemake.readthedocs.io/
 
-We use Snakefile to collect required data. Then we run final analysis
-steps in Jupyter
+We use Snakefile to collect and process required data. Then we run final analysis steps in Jupyter.
 """
 
 
 import numpy as np
 
-BERKELEY_DECADES = np.arange(1880, 2020, 10)
-ERA_YEARS = np.arange(1950, 2022)
+BERKELEY_DECADES = np.arange(1880, 2020, 10) # decades to download for the Berkeley Earth data
+ERA_YEARS = np.arange(1950, 2022) # years to download for ERA5 data
 
-# this rule tells Snakemake to create all the data that is imported directly into
-# the Jupyter notebooks
+# this rule tells Snakemake to create all the data that is imported directly into the Jupyter notebooks
 rule default_rule:
     input: 
         "fig/ERCOT_HDD_IDF_MLE_popweighted.pdf",
@@ -26,8 +24,16 @@ rule default_rule:
         "fig/local_rt_era5.pdf",
         "fig/HDD_pop_weighted_ts.pdf",
 
-# use the API to download hourly ERA5 temperature data over Texas
-# you will get an error unless you register for account; see README.md
+################################################################################
+############################# GET RAW DATA #####################################
+################################################################################
+
+# US EIA Preliminary Monthly Electric Generator Inventory (based on Form EIA-860M as a supplement to Form EIA-860)
+rule get_generators:
+    output: "data/raw/eia/november_generator2020.xlsx"
+    shell: "wget -O {output} https://www.eia.gov/electricity/data/eia860m/xls/november_generator2020.xlsx"
+
+# Use the CDAS API to download hourly ERA5 temperature data over Texas; you will get an error unless you register for account. See `README.md`.
 rule get_era5_tx_hourly:
     input: script="scripts/era5_get_tx_hourly.py"
     output: "data/raw/era5/tx/temp_hourly_{year}.nc"
@@ -38,6 +44,25 @@ rule get_era5_conus_hourly:
     input: script="scripts/era5_get_conus_hourly.py"
     output: "data/raw/era5/conus/temp_hourly_{year}.nc"
     shell: "python {input.script} --year {wildcards.year} -o {output}"
+
+# Download the raw berkeley earth temperature data
+rule get_berkeley_earth:
+    output: "data/raw/berkeleyearth/{var}_{decade}.nc"
+    shell: "wget -O {output} http://berkeleyearth.lbl.gov/auto/Global/Gridded/Complete_{wildcards.var}_Daily_LatLong1_{wildcards.decade}.nc"
+
+# Download the list of all GHCND stations and metadata from NOAA
+rule get_ghcnd_stations:
+    output: "data/raw/ghcnd_stations.txt"
+    shell: "wget -O {output} https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt"
+
+# Download and unzip the GHCND data from NOAA
+rule get_ghcnd_data:
+    output: "data/raw/ghcnd_all/USW00012960.dly"
+    shell: "wget https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz -O - | tar -xz -C data/raw"
+
+################################################################################
+############################# PROCESS DATA #####################################
+################################################################################
 
 # compute anomalies of temperature and heating degree days over CONUS for ERA5 data
 rule era5_conus_anomalies:
@@ -81,11 +106,6 @@ rule era5_return:
     output: "data/processed/era5/tx/return_period.nc"
     shell: "python {input.script} -i {input.infiles} -o {output}"
 
-# Download the raw berkeley earth temperature data
-rule get_berkeley_earth:
-    output: "data/raw/berkeleyearth/{var}_{decade}.nc"
-    shell: "wget -O {output} http://berkeleyearth.lbl.gov/auto/Global/Gridded/Complete_{wildcards.var}_Daily_LatLong1_{wildcards.decade}.nc"
-
 # aggregate berkeley earth data
 rule berkeley_earth_aggregate:
     input: 
@@ -102,16 +122,6 @@ rule berkeley_earth_hdd:
         tmax = "data/processed/berkeleyearth/TMAX.nc",
     output: "data/processed/berkeleyearth/hdd.nc"
     shell: "python {input.script} --tmin {input.tmin} --tmax {input.tmax} -o {output}"
-
-# Download the list of all GHCND stations and metadata from NOAA
-rule get_ghcnd_stations:
-    output: "data/raw/ghcnd_stations.txt"
-    shell: "wget -O {output} https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt"
-
-# Download and unzip the GHCND data from NOAA
-rule get_ghcnd_data:
-    output: "data/raw/ghcnd_all/USW00012960.dly"
-    shell: "wget https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz -O - | tar -xz -C data/raw"
 
 # get only GHCN stations that are in Texas and have sufficient useful data (see script for details)
 rule ghcn_subset:
@@ -130,14 +140,10 @@ rule historical_exceedance:
     output: "data/processed/ghcnd/return_periods.csv"
     shell: "python {input.script} -i {input.stations} -o {output}"
 
-# US EIA Preliminary Monthly Electric Generator Inventory (based on Form EIA-860M as a supplement to Form EIA-860)
-rule eia_data:
-    output: "data/raw/eia/november_generator2020.xlsx"
-    shell: "wget -O {output} https://www.eia.gov/electricity/data/eia860m/xls/november_generator2020.xlsx"
+################################################################################
+############################# ANALYZE DATA #####################################
+################################################################################
 
-#--------------------------------------------------------------------------
-#--------------------CREATE PLOTS IN JUPYTER NOTEBOOKS---------------------
-#--------------------------------------------------------------------------
 rule hdd_idf:
     input:
         "data/processed/era5/tx/hdd_ercot.nc",
