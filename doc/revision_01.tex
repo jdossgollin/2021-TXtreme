@@ -1,7 +1,7 @@
 \documentclass[12pt]{iopart}
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL submission_01.tex   Fri Apr 23 10:06:12 2021
-%DIF ADD submission_02.tex   Fri Apr 23 10:42:58 2021
+%DIF DEL submission_01.tex   Fri Apr 23 09:06:12 2021
+%DIF ADD submission_02.tex   Sun May  2 18:33:50 2021
 
 \usepackage{graphicx}
 \graphicspath{{../fig/}}
@@ -129,7 +129,11 @@ If \DIFdelbegin \DIFdel{this were an unprecedented or very rare event }\DIFdelen
 On the other hand, if similar events were in the record then one would expect a higher level of preparation.
 It is therefore important to assess whether \DIFdelbegin \DIFdel{the February 2021 cold snap could have been anticipated.
 }\DIFdelend \DIFaddbegin \DIFadd{historical data offered a precedent for the temperatures observed during February 2021.
-}\DIFaddend To answer this question, we first compute the population weighted temperature excursion below \SI{68}{\degree F} as a proxy for the unknown heating demand, and use this metric to explore \DIFdelbegin \DIFdel{how rare this event was }\DIFdelend \DIFaddbegin \DIFadd{the frequency with which this event could have been expected to occur }\DIFaddend using historical data.
+}\DIFaddend To answer this question, we first compute the population weighted \DIFdelbegin \DIFdel{temperature excursion below \mbox{%DIFAUXCMD
+\SI{68}{\degree F} }\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{difference between observed temperatures and a standard indoor temperature of \mbox{%DIFAUXCMD
+\SI{65}{\degree F} }\hspace{0pt}%DIFAUXCMD
+}\DIFaddend as a proxy for the unknown heating demand, and use this metric to explore \DIFdelbegin \DIFdel{how rare this event was }\DIFdelend \DIFaddbegin \DIFadd{the frequency with which this event could have been expected to occur }\DIFaddend using historical data.
 Next, we conduct a spatially distributed analysis to assess how unexpected the cold experienced by local roads, water mains, gas pipelines, energy generation facilities, and critical infrastructure installations was across Texas.
 We conclude by discussing the implications of these findings for long-term electricity systems planning given anticipated population growth and electrification.
 
@@ -176,11 +180,11 @@ We use three temperature datasets to ensure robust findings:
         We retain stations within the state of Texas if they provide at least 60 years of data and if they contain observations for the set of historical cold extremes shown in \cref{fig:historic_era5}.
 \end{enumerate}
 We also use population density data from the GPWv4 dataset \cite{ciesin_gpwv4:2016}, a list of power generation facilities from the US Energy Information Administration \cite{useia_generators:2021}, and a map of the Texas \DIFdelbegin \DIFdel{Interconnect \mbox{%DIFAUXCMD
-    \cite{useia_regions:2021}}\hspace{0pt}%DIFAUXCMD
-  .}\DIFdelend \DIFaddbegin \DIFadd{Interconnection \mbox{%DIFAUXCMD
-    \cite{useia_regions:2021}}\hspace{0pt}%DIFAUXCMD
-  .%DIF > TODO: add and cite information on the generators that did and did not go out.
-}\DIFaddend
+\cite{useia_regions:2021}}\hspace{0pt}%DIFAUXCMD
+.}\DIFdelend \DIFaddbegin \DIFadd{Interconnection \mbox{%DIFAUXCMD
+\cite{useia_regions:2021}}\hspace{0pt}%DIFAUXCMD
+.%DIF > TODO: add and cite information on the generators that did and did not go out.
+}\DIFaddend 
 
 
 \subsection{Inferred \DIFaddbegin \DIFadd{per Capita }\DIFaddend Demand for Heating}\label{sec:inferred-demand}
