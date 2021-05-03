@@ -13,8 +13,8 @@ Welcome to the code repository for the paper "How unprecedented was the February
 - Dr. Upmanu Lall, Columbia University
 - Dr. Vijay Modi, Columbia University
 
-*This paper has not yet undergone peer review,* but our preprint is available on [EarthArxiv](https://eartharxiv.org/repository/view/2122/).
-Please cite this non-reviewed manuscript as
+*This paper has not yet been accepted for publication,* but our preprint is available on [EarthArxiv](https://eartharxiv.org/repository/view/2122/).
+Please cite this manuscript as
 
 ```bibtex
 @unpublished{doss-gollin_txtreme:2021,
@@ -80,6 +80,12 @@ conda activate txtreme
 ```
 
 to activate it.
+You will also need to install our helper functions
+
+```shell
+pip install -e .
+```
+
 In order to run, you will need to do two things to access required data.
 
 1. Download the GPWV4 data. See instructions in [`data/raw/gpwv4/README.md`](data/raw/gpwv4/README.md).

@@ -24,7 +24,7 @@ def main() -> None:
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
-    temp = xr.open_mfdataset(args.infiles)["t2m"].mean(dim="expver").compute()
+    temp = xr.open_mfdataset(args.infiles)["t2m"].compute()
     temp_roll = xr.concat(
         [
             temp.rolling(time=dur).mean().assign_coords({"duration": dur})

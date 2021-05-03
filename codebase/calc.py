@@ -45,6 +45,31 @@ def cold_return_period(y: float, x: np.ndarray) -> float:
     return return_period(-y, -x)
 
 
+def calc_plotposition_return_level(X, T):
+    """
+    Use an empirical formula for plot position rather than MLE GEV fit
+
+    https://www.itl.nist.gov/div898/handbook/eda/section3/eda366g.htm
+    https://www.engr.colostate.edu/~ramirez/ce_old/classes/cive322-Ramirez/IDF-Procedure.pdf
+    """
+    KT = -np.sqrt(6) / np.pi * (0.5772 + np.log(np.log(T / (T - 1))))
+    Xbar = np.mean(X)
+    S = np.std(X)
+    return Xbar + KT * S
+
+
+def calc_mle_return_level(X, T):
+    """Calculate the GEV return level using MLE"""
+    theta = gev.fit(
+        X,
+        0,  # guess for shape
+        loc=40,  # guess for location
+        scale=10,  # guess for scale
+        optimizer=optimizer,
+    )
+    return gev(*theta).isf(1 / T)
+
+
 def calculate_anomaly(da, groupby_type="time.month"):
     """Function to calculate anomalies from xarray docs"""
     clim = da.groupby(groupby_type).mean(dim="time")
