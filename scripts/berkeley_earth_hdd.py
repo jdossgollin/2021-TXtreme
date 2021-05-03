@@ -7,7 +7,7 @@ import argparse
 import numpy as np
 import xarray as xr
 
-BASE_TEMP = 68
+BASE_TEMP = 65
 
 
 def main() -> None:

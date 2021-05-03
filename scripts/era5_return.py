@@ -11,7 +11,7 @@ import xarray as xr
 
 from codebase.calc import cold_return_period
 
-BASE_TEMP = 68
+BASE_TEMP = 65
 DURATIONS = [6, 24, 48, 96]
 
 

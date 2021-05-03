@@ -8,7 +8,7 @@ import argparse
 import numpy as np
 import xarray as xr
 
-BASE_TEMP = 68
+BASE_TEMP = 65
 GPWV4_YEARS = [2000, 2005, 2010, 2015, 2020]
 
 
