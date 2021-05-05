@@ -8,3 +8,5 @@ In our analysis we specifically include a single CSV file to estimate the fracti
 The data comes from the Academic Commons entry for the paper:
 
 > https://doi.org/10.7916/d8-4g8y-mv98
+
+Our copy of `tract.data.TX.csv` comes from downloading the `.zip` file, then copying the `TractData/tract.data.TX.csv` file.

@@ -13,10 +13,11 @@
 \usepackage{enumitem}
 \setlist{nosep}
 
+\renewcommand{\cite}[1]{\citep{#1}}
 % cross-refs
-\hypersetup{hidelinks}
 \usepackage{xr}
-\externaldocument{submission_02}
+\externaldocument{./submission_02}
+\hypersetup{hidelinks}
 \usepackage{cleveref}
 
 \title{How unprecedented was the February 2021 Texas cold snap?}
@@ -26,8 +27,6 @@
 \begin{document}
 
 \maketitle
-
-\listoftodos
 
 We thank the editors and both referees for their thoughtful, constructive, and timely comments on our initial submission.
 
@@ -68,8 +67,9 @@ In the remainder of this document we address the specific comments made by the t
   We have also added some references to the discussion.
   Below we list the new sources referenced in this revision.
 }
+\clearpage
 \begin{quote}
-  Additional works cited
+  Works newly cited:
   \begin{itemize}
     \item \citet{ceser_winterupdate:2021}
     \item \citet{clack_uri:2021}
@@ -104,6 +104,16 @@ In the remainder of this document we address the specific comments made by the t
   We use three distinct datasets to analyze temperature minima in \DIFdelbegin \DIFdel{Texas }\DIFdelend \DIFaddbegin \DIFadd{the region covered by the Texas Interconnection }\DIFaddend through the lens of distributed (each grid cell analyzed separately) and aggregated (weighted averages taken across space) extreme values analysis.
 \end{quote}
 
+\begin{quote}
+  \DIFadd{These failures occurred both because electricity demand exceeded projections, and because electricity supply failed to meet them.
+    On the demand side, the Electric Reliability Council of Texas (ERCOT), which operates the Texas Interconnection bulk electric power system (hence ``Texas Interconnection''), estimated that the peak demand would have been \mbox{%DIFAUXCMD
+      \SI{76819}{\mega\watt} }\hspace{0pt}%DIFAUXCMD
+    without load shedding \mbox{%DIFAUXCMD
+      \cite{magness_review:2021}}\hspace{0pt}%DIFAUXCMD
+    .
+  }
+\end{quote}
+
 \RC{
   Regarding the definition of a HDD/CDD: More frequently 65 degrees is used, I think.
 }
@@ -122,22 +132,28 @@ In the remainder of this document we address the specific comments made by the t
   This is a helpful suggestion.
   ERCOT has released data on generator outages at \url{http://www.ercot.com/content/wcm/lists/226521/Unit_Outage_Data_20210304__Public_.xlsx}.
   We have added a map of generator outages aggregated over a 4-day span (12:00AM local from February 14 to 18) as supplemental figure S8 using the EGOVA visualization tool \url{https://bit.ly/EGOVA}.
+  EGOVA combines the ERCOT data on generator outages with other data sets to plot locations.
   We have referenced this figure in our revised discussion on supply side risk as shown below.
 }
 \begin{quote}
-  A proximate cause of load shedding in the Texas \DIFdelbegin \DIFdel{Interconnect }\DIFdelend \DIFaddbegin \DIFadd{Interconnection }\DIFaddend during February 2021 was the vulnerability of the electricity generation system to the severe cold temperatures \cite{everhart_iea:2021}.
-  \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+  A proximate cause of load shedding in the Texas \DIFdelbegin \DIFdel{Interconnect }\DIFdelend \DIFaddbegin \DIFadd{Interconnection }\DIFaddend during February 2021 was the vulnerability of the electricity generation system to \DIFdelbegin \DIFdel{the severe cold temperatures \mbox{%DIFAUXCMD
+      \cite{everhart_iea:2021}}\hspace{0pt}%DIFAUXCMD
+    .
+    \mbox{%DIFAUXCMD
       \Cref{fig:local_era5,fig:local_ghcnd} }\hspace{0pt}%DIFAUXCMD
-    show that this happened }\DIFdelend \DIFaddbegin \DIFadd{As shown in \mbox{%DIFAUXCMD
+    show that this happened }\DIFdelend \DIFaddbegin \DIFadd{cold \mbox{%DIFAUXCMD
+      \cite{everhart_iea:2021}}\hspace{0pt}%DIFAUXCMD
+    .
+    As shown in \mbox{%DIFAUXCMD
       \cref{fig:egova}}\hspace{0pt}%DIFAUXCMD
     , generator outages occurred across the state, }\DIFaddend even though most parts of the state had previously experienced similarly intense cold, notably in \DIFdelbegin \DIFdel{1989.
   }\DIFdelend \DIFaddbegin \DIFadd{1989 (\mbox{%DIFAUXCMD
       \cref{fig:local_era5,fig:local_ghcnd}}\hspace{0pt}%DIFAUXCMD
     ).
-    Yet despite temperatures that were, in aggregate, more intense, the electricity system experienced fewer than three hours of rolling blackouts from December 21-23, 1989 \mbox{%DIFAUXCMD
+    Yet despite temperatures that were, in aggregate, more intense, the Texas Interconnection experienced fewer than three hours of rolling blackouts from December 21-23, 1989 \mbox{%DIFAUXCMD
       \cite{nerc_operation:1989,osborne_twofreezes:2021}}\hspace{0pt}%DIFAUXCMD
     .
-    Following the 1983, 1989, and 2011 cold snaps, the North American Electric Reliability Corporation (NERC) warned that ``constraints on natural gas fuel supplies to generating plants'' and ``generating unit trips, derates, or failure to start due to weather related causes'' were common themes across severe and moderate cold extremes \mbox{%DIFAUXCMD
+    Following the 1983, 1989, and 2011 cold snaps, the North American Electric Reliability Corporation (NERC) identified ``constraints on natural gas fuel supplies to generating plants'' and ``generating unit trips, derates, or failure to start due to weather related causes'' as key vulnerabilities \mbox{%DIFAUXCMD
       \cite{nerc_previous:2013}}\hspace{0pt}%DIFAUXCMD
     , foreshadowing many of the causes of February 2021 energy system failures identified by ERCOT \mbox{%DIFAUXCMD
       \cite{ercotpublic_outagesv2:2021,magness_review:2021}}\hspace{0pt}%DIFAUXCMD
@@ -158,7 +174,7 @@ In the remainder of this document we address the specific comments made by the t
 \AR{
   Thank you for the interesting and thought-provoking comment.
   We have added some historical context regarding the 1983 and 1989 events (we find the 1989 event to be more extreme than the 1983 one) to the discussion section as shown in response to the previous comment.
-  However, we have refrained from speculating about the degree to which different technologies might have performed in 2021 since nearly all technologies used in Texas can work in cold temperatures if sufficiently prepared.
+  However, we have refrained from speculating about the degree to which different technologies might have performed in 2021 since nearly all technologies used in Texas can work in cold temperatures with sufficient weatherization.
 }
 
 \section{Referee \#2}
@@ -172,6 +188,7 @@ In the remainder of this document we address the specific comments made by the t
 \AR{
   Thank you for this helpful summary.
   As we note below, we have removed reference to the term ``black swan'' in favor of language with more specific definitions.
+  We have also clarified that our metric is computed per capita, which explains why population growth has driven a trend in this metric.
 }
 
 \RC{
@@ -191,7 +208,18 @@ In the remainder of this document we address the specific comments made by the t
 \begin{quote}
   Between February 14th and 17th, 2021, a  northern air mass blanketed much of the continental United States, causing anomalously low surface temperatures across the Great Plains.
   \DIFdelbegin \DIFdel{While polar air excursions are not unusual, they do not typically reach as far south as the Mexican border.
-  }\DIFdelend
+  }\DIFdelend The state of Texas was particularly hard hit, with coincident and cascading failures of natural gas production, power generation, transportation, and water systems leaving millions of Texans without electricity, heat, and water, many for several days \DIFdelbegin \DIFdel{.
+    The intensity and widespread nature of this weather event underscore a high vulnerability to cold temperatures in places that did not experience a comparable event in preceding decades.
+    Even as energy demand for winter heating in Texas has grown dramatically with population and economic development, the system’s vulnerability to cold jeopardized lives and property and }\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+      \cite{ceser_winterupdate:2021,clack_uri:2021,smead_eyesoftx:2021}}\hspace{0pt}%DIFAUXCMD
+    .
+    These failures disproportionately affected vulnerable populations \mbox{%DIFAUXCMD
+      \cite{dobbins_blackoutdisparity:2021}}\hspace{0pt}%DIFAUXCMD
+    , left at least 111 Texans dead \mbox{%DIFAUXCMD
+      \cite{mulcahy_urideath:2021}}\hspace{0pt}%DIFAUXCMD
+    , and }\DIFaddend brought the Texas electricity grid within minutes of collapse \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+      \cite{magness_review:2021}}\hspace{0pt}%DIFAUXCMD
+  }\DIFaddend .
 \end{quote}
 
 \AR{
@@ -205,7 +233,8 @@ In the remainder of this document we address the specific comments made by the t
     Previous cold snaps in Texas, }\DIFaddend notably in 1899, 1951, 1983, 1989, and \DIFdelbegin \DIFdel{2011.
   }\DIFdelend \DIFaddbegin \DIFadd{2011 (see \mbox{%DIFAUXCMD
       \cref{fig:historic_era5,fig:historic_bk}}\hspace{0pt}%DIFAUXCMD
-    ), have affected both human and ecological systems.}
+    ), have affected both human and ecological systems.
+  }
 \end{quote}
 
 \RC{
@@ -220,8 +249,15 @@ In the remainder of this document we address the specific comments made by the t
   Thank you for calling to our attention these unclear points.
   First, we have changed the subplot titles of Figure 1 from ``N days ending YYYY-MM-DD'' to ``YYYY-MM-DD to YYYY-MM-DD'' for clarity.
   We have supplemented this with column titles.
-  We have also added a reference to the ERA-5 data in the caption.
+  We have also added a reference to the ERA-5 data in the caption:
 }
+
+\begin{quote}
+  Severe cold snaps that affect Texas and extend into the central United States have several precedents in the historical record.
+  Plot shows anomalies of daily mean temperatures \DIFaddbeginFL \DIFaddFL{from the ERA-5 reanalysis \mbox{%DIFAUXCMD
+      \cite{hersbach_era5:2020} }\hspace{0pt}%DIFAUXCMD
+  }\DIFaddendFL for historic major cold events affecting Texas\ldots
+\end{quote}
 
 \AR{
   Finally, we replaced the confusing term ``temperature excursion'' with the more precise definition below (noting that referee \#1 suggests to use \SI{65}{\degree F} rather than \SI{68}{\degree F}).
@@ -232,7 +268,7 @@ In the remainder of this document we address the specific comments made by the t
       \SI{68}{\degree F} }\hspace{0pt}%DIFAUXCMD
   }\DIFdelend \DIFaddbegin \DIFadd{difference between observed temperatures and a standard indoor temperature of \mbox{%DIFAUXCMD
       \SI{65}{\degree F} }\hspace{0pt}%DIFAUXCMD
-  }\DIFaddend as a proxy for the unknown heating demand, \DIFdelbegin \DIFdel{and use this metric to explore how rare this event was using historical data
+  }\DIFaddend as a proxy for the unknown heating demand, \DIFdelbegin \DIFdel{and use this metric to explore how rare this event was using historical data.
   }\DIFdelend
 \end{quote}
 
@@ -263,12 +299,13 @@ In the remainder of this document we address the specific comments made by the t
 }
 
 \begin{quote}
-  Outside the Texas \DIFdelbegin \DIFdel{Interconnect region, much of the }\DIFdelend \DIFaddbegin \DIFadd{Interconnection region, the Midcontinent Independent System Operator and Southwest Power Pool instructed utilities to shed firm load, but of the approximately 4.89 million customers without power in Texas, Louisiana, and Oklahoma, an estimated 4.5 million were in }\DIFaddend Texas \DIFdelbegin \DIFdel{Panhandle and central Oklahomaexperienced intense cold with a return period greater than 100 years at multiple durations.
+  Outside the Texas \DIFdelbegin \DIFdel{Interconnect region, much of the Texas Panhandle and central Oklahoma experienced intense cold with a return period greater than 100 years at multiple durations.
     Although Oklahoma recorded some water main breaks \mbox{%DIFAUXCMD
       \cite{crum_water:2021} }\hspace{0pt}%DIFAUXCMD
     and rolling blackouts for several hours \mbox{%DIFAUXCMD
       \cite{money_oklahoma:2021}}\hspace{0pt}%DIFAUXCMD
-    , infrastructure impacts were less severe than in Texas despite recording more extreme (relative both to its own historical record and in absolute terms) temperatures}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+    , infrastructure impacts were less severe than in Texasdespite recording more extreme (relative both to its own historical record and in absolute terms) temperatures}\DIFdelend \DIFaddbegin \DIFadd{Interconnection region, the Midcontinent Independent System Operator and Southwest Power Pool instructed utilities to shed firm load.
+    Yet despite local return periods for temperature in central Oklahoma equal to or greater than local return periods for temperature in Texas, 92\% of the customers in Texas, Louisiana, and Oklahoma without power were in Texas \mbox{%DIFAUXCMD
       \cite{ceser_winterupdate:2021}}\hspace{0pt}%DIFAUXCMD
   }\DIFaddend .
 \end{quote}
@@ -283,7 +320,7 @@ In the remainder of this document we address the specific comments made by the t
   For example, we have clarified language in the abstract, introduction, and discussion:
 }
 \begin{quote}
-  This motivates the question: \DIFdelbegin \DIFdel{was the cold that contributed to this infrastructure failure a ``black swan'' that could not have been anticipated, or did historical storms provide a precedent}\DIFdelend
+  This motivates the question: \DIFdelbegin \DIFdel{was the cold that contributed to this infrastructure failure a ``black swan'' that could not have been anticipated, or }\DIFdelend did historical storms \DIFdelbegin \DIFdel{provide a precedent}\DIFdelend \DIFaddbegin \DIFadd{suggest that such temperatures were known to occur, and if so with what frequency}\DIFaddend ?
 \end{quote}
 \begin{quote}
   It is therefore important to assess whether \DIFdelbegin \DIFdel{the February 2021 cold snap could have been anticipated.
@@ -306,7 +343,7 @@ In the remainder of this document we address the specific comments made by the t
   The February 2021 cold snap was the most intense in 30 years, but was not without precedent in the full historical record.
   In addition to the record cold conditions of 1899 (\cref{fig:historic_bk}), we estimate that the weather of December 1989 would have resulted in \DIFdelbegin \DIFdel{slightly }\DIFdelend higher 6-hour and 2-day \DIFdelbegin \DIFdel{aggregate heating demands }\DIFdelend \DIFaddbegin \DIFadd{values of inferred heating demand per capita }\DIFaddend over the Texas \DIFdelbegin \DIFdel{Interconnect had it occurred in February 2021.
     Several other storms since 1950 would have produced nearly as much demand for heating }\DIFdelend \DIFaddbegin \DIFadd{Interconnection than the February 2021 event.
-    Storms in February 1951, January 1962, and December 1983 would have resulted in at least 90\% as much inferred heating demand per capita}\DIFaddend .
+    Storms in February 1951, January 1962, and December 1983 would have resulted in at least 90\% as much inferred heating demand per capita at 24 and 48 hour durations}\DIFaddend .
   Given upward trends in the electrification of heating, it is likely that future cold snaps will cause peak annual loads on the Texas \DIFdelbegin \DIFdel{Interconnect }\DIFdelend \DIFaddbegin \DIFadd{Interconnection }\DIFaddend to occur during the winter season.
   Infrastructure expansion necessitated by a rapidly growing population offers Texas the opportunity to invest in a more resilient energy system.
 \end{quote}
