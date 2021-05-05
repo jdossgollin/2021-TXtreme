@@ -24,7 +24,7 @@
   Winter storm Uri brought severe cold to the southern United States in February 2021, causing a cascading failure of interdependent systems in Texas where infrastructure was not adequately prepared for such cold.
   In particular, the failure of interconnected energy systems reduced electricity supply just as heating demands spiked, leaving millions of Texans without heat or electricity, many for several days.
   This motivates the question: did historical storms suggest that such temperatures could be anticipated, and if so with what frequency?
-  We compute the a temperature-based proxy for heating demand and use this metric to answer the question ``what would the aggregate demand for heating have been had historic cold snaps occurred with today's population?''.
+  We compute a temperature-based proxy for heating demand and use this metric to answer the question ``what would the aggregate demand for heating have been had historic cold snaps occurred with today's population?''.
   We find that local temperatures and the inferred demand for heating across the region served by the Texas Interconnection during a storm in December 1989 were more severe than those recorded during February 2021, and that cold snaps in 1951 and 1983 were nearly as severe.
   Given anticipated population growth, future storms may lead to even greater infrastructure failures if adaptive investments are not made.
   Further, electricity system managers should anticipate that trends in electrification of heating may cause peak annual loads on the Texas Interconnection to occur during winter storms in some years.
@@ -64,7 +64,6 @@ For example, the 1951 cold event caused a  significant die-off of fish life in t
 
 The specific spatiotemporal structure of a cold event, and its correspondence with population centers, determines the grid-wide demand for heating (see \cref{sec:inferred-demand}).
 The structure of the storm also drives the aggregated hazard to energy infrastructure, which has implications for the costs and benefits of infrastructure hardening.
-It is therefore important to assess the weather conditions that led to these infrastructure failures and identify whether they had historical precedent.
 The spatiotemporal patterns of historical cold snaps in Texas are illustrated in \cref{fig:historic_era5} and supplemental \cref{fig:historic_bk,fig:historic_tx}.
 Although the spatiotemporal structure of each event is distinct, it is apparent that cold extremes in Texas tend to co-occur with cold temperatures across much of the United States, particularly the Great Plains.
 While the 2021 event was severe, daily temperature extrema in Texas appear qualitatively comparable to historical events.
@@ -100,28 +99,28 @@ We use three temperature datasets to ensure robust findings:
         These measurements represent point measurements, which can differ in important ways from gridded products describing spatial averages due to the spatial heterogeneity of temperature fields.
         We retain stations within the state of Texas if they provide at least 60 years of data and if they contain observations for the set of historical cold extremes shown in \cref{fig:historic_era5}.
 \end{enumerate}
-We also use population density data from the GPWv4 dataset \cite{ciesin_gpwv4:2016}, a list of power generation facilities from the US Energy Information Administration \cite{useia_generators:2021}, and a map of the Texas Interconnection \cite{useia_regions:2021}.%TODO: add and cite information on the generators that did and did not go out.
+We also use population density data from the GPWv4 dataset \cite{ciesin_gpwv4:2016}, a list of power generation facilities from the US Energy Information Administration \cite{useia_generators:2021}, and a map of the Texas Interconnection \cite{useia_regions:2021}.
 
 
-\subsection{Inferred per Capita Demand for Heating}\label{sec:inferred-demand}
+\subsection{Inferred heating demand per capita}\label{sec:inferred-demand}
 
 Most space heating in Texas is either electric or gas \cite{waite_heating:2020} and the majority of power generation in the Texas Interconnection depends on natural gas \cite{everhart_iea:2021}.
-Stress on natural gas production and delivery was therefore just as important as the more visible stress on the electric system.
+Stress on natural gas production and delivery was therefore just as important as the more visible stress on the electric system \cite{ercotpublic_outagesv2:2021}.
 
-The hourly or daily thermal energy requirement for space heating is primarily driven by how much lower the ambient temperature is than an indoor comfort temperature of \SI{68}{\degree F}.
+The hourly or daily thermal energy requirement for space heating is primarily driven by how much lower the ambient temperature is than an indoor comfort temperature of \SI{65}{\degree F}.
 This relationship is often expressed in terms of heating degree days or hours.
-We therefore consider the temperature excursion from \SI{68}{\degree F} as a proxy for thermal heating demand.
-We compute this value each hour for the ERA5 data, defining heating demand at each grid cell as $\text{HD}_t = \max (68 - T_t, 0)$, where $T_t$ is the temperature at hour $t$ in \si{\degree F}.
-The Berkeley Earth and GHCN datasets provide daily minimum and maximum temperatures, so we define heating demand at each grid cell or station as $\text{HD}_d = \max (68 -\frac{T_{\text{min},d} + T_{\text{max},d}}{2}, 0)$, where $T_{\text{min},d}$ is the minimum temperature recorded on day $d$ and $T_{\text{max},d}$ is the maximum temperature recorded on day $d$, both in \si{\degree F}.
+We therefore consider the difference between observed temperatures and a standard indoor temperature of \SI{65}{\degree F} as a proxy for thermal heating demand.
+We compute this value each hour for the ERA5 data, defining heating demand at each grid cell as $\text{HD}_t = \max (65 - T_t, 0)$, where $T_t$ is the temperature at hour $t$ in \si{\degree F}.
+The Berkeley Earth and GHCN datasets provide daily minimum and maximum temperatures, so we define heating demand at each grid cell or station as $\text{HD}_d = \max (65 -\frac{T_{\text{min},d} + T_{\text{max},d}}{2}, 0)$, where $T_{\text{min},d}$ is the minimum temperature recorded on day $d$ and $T_{\text{max},d}$ is the maximum temperature recorded on day $d$, both in \si{\degree F}.
 
 To assess how spatially correlated cold spells might affect the Texas electric grid, we average heating demand in space over the Texas Interconnection domain \cite{useia_regions:2021}, weighting each grid cell by 2020 population density \cite{ciesin_gpwv4:2016}.
-We refer to this spatially aggregated time series, which has the straightforward interpretation as the average heating demand experienced by Texas residents, as ``Inferred per Capita Demand for Heating.''
+We refer to this spatially aggregated time series, which has the straightforward interpretation as the average heating demand experienced by Texas residents, as ``Inferred Heating Demand per Capita.''
 
 \subsection{Return Period}
 
 Return periods define the probability with which a particular event can be expected to occur.
 Thus, a $T$-year event has a $\frac{1}{T}$ probability of occurring in a given year.
-For each event duration considered, we calculated return periods by fitting a stationary generalized extreme value (GEV) distribution to the time series of annual maxima of inferred per capita demand for heating (see \cref{sec:inferred-demand}).
+For each event duration considered, we calculated return periods by fitting a stationary generalized extreme value (GEV) distribution to the time series of annual maxima of inferred heating demand per capita (see \cref{sec:inferred-demand}).
 Events that occur in December are coded to the following year so that a single winter season is grouped together.
 The 2021 winter season was excluded from return period estimates, allowing us to interpret return periods for the February 2021 event as \emph{a priori} estimates.
 
@@ -138,11 +137,11 @@ We are committed to open science.
 Our open source code is freely available in a live repository at \url{https://github.com/jdossgollin/2021-TXtreme} and in an archived repository at \url{https://dx.doi.org/10.5281/zenodo.4568923}.
 Reproducibility is facilitated through the Snakemake library \cite{koster_snakemake:2012}.
 
-\section{How extreme was inferred per capita heating demand over the Texas Interconnect?}
+\section{How extreme was inferred heating demand per capita over the Texas Interconnection?}
 
 The total shock to Texas heating demand is partially determined by the extent to which cold snaps impact multiple population centers simultaneously.
 As such, understanding whether there was precedent for a cold snap simultaneously affecting several regions of Texas's grid that today have high population density is critical.
-We therefore use our measure of inferred per capita demand for heating (see \cref{sec:inferred-demand}) to represent the aggregate heating demand induced by cold temperatures.
+We therefore use our measure of inferred heating demand per capita (see \cref{sec:inferred-demand}) to represent the aggregate heating demand induced by cold temperatures.
 Aggregating historic temperature fields in space using the 2020 population, we answer the question ``what would the aggregate demand for heating have been had historic cold snaps occurred today?''
 
 \Cref{fig:idf_weighted} shows that the intensity, duration, and recurrence intervals of the February 2021 storm are severe but not unprecedented in the historical record.
@@ -155,9 +154,9 @@ The right panel shows statistical return periods for these extreme events.
   \centering
   \includegraphics[width=\textwidth]{ERCOT_HDD_IDF_MLE_popweighted.pdf}
   \caption{
-    The inferred per capita demand for heating induced by the February 2021 cold snap is not unprecedented.
-    For the worst 6 hours, the 1989 event was more severe than the 2021 event, while they are comparable for the longer durations.
-    (a): time series of annual maximum inferred per capita demand for heating (\cref{sec:inferred-demand}) at 6 hour and 2 day durations.
+    The inferred heating demand per capita induced by the February 2021 cold snap is not unprecedented.
+    For the worst 6 hours, the 1989 event was more severe than the 2021 event, while they are comparable for longer durations.
+    (a): time series of annual maximum inferred heating demand per capita (\cref{sec:inferred-demand}) at 6 hour and 2 day durations.
     December extremes, including the December 1989 storm, are coded to the following year so that one maximum per December-February winter season is taken.
     (b): the intensity-duration-frequency intervals estimated using 1950-2020 data (i.e., not using the 2021 event), overlaid by the annual maxima from the 1989, 2011, and 2021 events.
     Gray dashed lines indicate 2, 5, 10, 25, 50, and 100 year return levels.
@@ -192,17 +191,17 @@ Outside the Texas Interconnection region, the Midcontinent Independent System Op
 
 \section{Discussion}
 
-Our spatially aggregated metric of inferred per capita demand for heating shows that the February 2021 event was intense but not unforeseeable (\cref{fig:idf_weighted}).
+Our spatially aggregated metric of inferred heating demand per capita shows that the February 2021 event was intense but not unforeseeable (\cref{fig:idf_weighted}).
 Although specific locations experienced very intense ($>100$ year return period) temperatures, we find that for most locations in Texas the temperatures recorded during the February 2021 cold snap had precedent in the historical record.
 
 A proximate cause of load shedding in the Texas Interconnection during February 2021 was the vulnerability of the electricity generation system to the severe cold temperatures \cite{everhart_iea:2021}.
-\Cref{fig:local_era5,fig:local_ghcnd} show that this happened even though most parts of the state had previously experienced similarly intense cold, notably in 1989.
+As shown in \cref{fig:egova}, generator outages occurred across the state, even though most parts of the state had previously experienced similarly intense cold, notably in 1989 (\cref{fig:local_era5,fig:local_ghcnd}).
 Yet despite temperatures that were, in aggregate, more intense, the electricity system experienced fewer than three hours of rolling blackouts from December 21-23, 1989 \cite{nerc_operation:1989,osborne_twofreezes:2021}.
 Following the 1983, 1989, and 2011 cold snaps, the North American Electric Reliability Corporation (NERC) warned that ``constraints on natural gas fuel supplies to generating plants'' and ``generating unit trips, derates, or failure to start due to weather related causes'' were common themes across severe and moderate cold extremes \cite{nerc_previous:2013}, foreshadowing many of the causes of February 2021 energy system failures identified by ERCOT \cite{ercotpublic_outagesv2:2021,magness_review:2021}.
 While our analysis neglects other meteorological factors, like freezing rain, that may have impeded operations at specific facilities, we find that the February 2021 failures of energy and electricity systems in the Texas Interconnection took place during temperatures with precedent in the historical record.
 
 Another cause of load shedding was the high demand for electricity that low temperatures induced.
-Currently at 50\% of Texas households use electricity for space heating over the majority of census tracts of the state \cite{waite_heating:2020} and further electrification is a central element of many plans to decarbonize our energy sector \cite{williams_decarbonization:2012,davis:2018,white_txresidential:2019}.
+Currently at least 50\% of Texas households use electricity for space heating over the majority of census tracts of the state \cite{waite_heating:2020} and further electrification is a central element of many plans to decarbonize our energy sector \cite{williams_decarbonization:2012,davis:2018,white_txresidential:2019}.
 While summer peak loads have been a central planning concern on the Texas grid in the past, it is likely that winter peak loads will become a greater concern in the coming decades.
 In fact, the estimated \SI{76819}{\mega\watt} of peak demand without load shedding during this event \cite{magness_review:2021} exceeded not only the previous winter demand record of \SI{65900}{\mega\watt} recorded on January 17, 2018 but also the all-season record actual demand of \SI{74800}{\mega\watt} recorded on August 19, 2019 \cite{everhart_iea:2021}.
 As electrification of heating continues, severe cold snaps may consistently represent the peak demand on the Texas Interconnect.
@@ -222,8 +221,8 @@ Thus, the exact chain of events that led to the blackouts and water system disru
 \section{Conclusions}
 
 The February 2021 cold snap was the most intense in 30 years, but was not without precedent in the full historical record.
-In addition to the record cold conditions of 1899 (\cref{fig:historic_bk}), we estimate that the weather of December 1989 would have resulted in higher 6-hour and 2-day aggregate per capita demand for heating over the Texas Interconnection than the February 2021 event had it occurred with today's population.
-Storms in February 1951, January 1962, and December 1983 would have resulted in at least 90\% as much per capita demand for heating had they occurred today.
+In addition to the record cold conditions of 1899 (\cref{fig:historic_bk}), we estimate that the weather of December 1989 would have resulted in higher 6-hour and 2-day values of inferred heating demand per capita over the Texas Interconnection than the February 2021 event.
+Storms in February 1951, January 1962, and December 1983 would have resulted in at least 90\% as much inferred heating demand per capita.
 Given upward trends in the electrification of heating, it is likely that future cold snaps will cause peak annual loads on the Texas Interconnection to occur during the winter season.
 Infrastructure expansion necessitated by a rapidly growing population offers Texas the opportunity to invest in a more resilient energy system.
 
@@ -288,9 +287,9 @@ To complement \cref{fig:local_era5}, we compute local return periods using stati
 Only stations with at least 60 years of data are considered, and since the locations of these stations are not chosen at random, this does not constitute a representative sample of all points across Texas.
 However, the spatial pattern matches that of \cref{fig:local_era5}, with a band of severe cold stretching from south-central to eastern Texas and in the Texas Panhandle.
 
-\subsection{Inferred per capita demand for heating}
+\subsection{Inferred heating demand per capita}
 
-To complement our analysis of inferred per capita demand for heating, we consider how results change as a function of two modeling decisions.
+To complement our analysis of inferred heating demand per capita, we consider how results change as a function of two modeling decisions.
 First, we consider what happens if the spatial field demand for heating is aggregated using grid cell area rather than population density.
 Next, we compute return periods using an estimator based on the method of $L$-moments.
 Although $L$-moment estimators for the generalized extreme value distribution are not unbiased, they are popular in the statistical hydrology literature for their stability \cite{hosking_gev:1985,martins_gev:2001,morrison_gev:2002}.
@@ -341,8 +340,16 @@ This reveals a rise from approximately \SI{10}{\degree F} to nearly \SI{60}{\deg
   \centering
   \includegraphics[width=\textwidth]{HDD_pop_weighted_ts.pdf}
   \caption{
-    A time series of inferred per capita demand for heating over the Texas Interconnection during the February 2021 cold snap.
+    A time series of inferred heating demand per capita over the Texas Interconnection during the February 2021 cold snap.
   }\label{fig:hdd_ts}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{EGOVA.pdf}
+  \caption{
+    ERCOT generator outages from 12:00AM on 14 February 2021 to 12:00AM on 18 February 2021.
+    Map produced using ERCOT's Generator Outage/Derate Visualization App (EGOVA) available at \url{https://bit.ly/EGOVA}.
+  }\label{fig:egova}
 \end{figure}
 
 \end{document}
