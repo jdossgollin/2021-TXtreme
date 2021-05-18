@@ -35,7 +35,7 @@ All code is posted on this repository.
 
 ### To Examine
 
-If you want to browse our code, this section is for you.
+> If you want to browse our code, this section is for you.
 
 You will find four Jupyter notebooks in `scripts/`.
 You can open them and they will render in GitHub.
@@ -43,8 +43,8 @@ This will show you figures in our paper with some additional commentary.
 
 ### To dig deep
 
-Our Jupyter notebooks use outputs from other scripts to create visualizations.
-If you want to dig into those scripts, this section is for you.
+> Our Jupyter notebooks use outputs from other scripts to create visualizations.
+> If you want to dig into those scripts, this section is for you.
 
 We use [Snakemake](snakemake.readthedocs.io/) to organize or code.
 The `Snakefile` organizes all inputs and provides comments.
@@ -57,7 +57,8 @@ To provide consistency, shared functions are placed in `scripts/codebase`.
 
 ### To Run
 
-If you want to run or modify our results, this section is for you.
+> If you want to run or modify our results, this section is for you.
+
 Please note: **running this will require approximately 60GB of disk space**.
 You have been warned!
 *All commands here assume standard UNIX terminal; Windows may be subtly different*.
