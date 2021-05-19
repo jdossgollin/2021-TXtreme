@@ -6,24 +6,21 @@
 
 [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007)
 
-Welcome to the code repository for the paper "How unprecedented was the February 2021 Texas cold snap?" by:
+Welcome to the code repository for the paper "How unprecedented was the February 2021 Texas cold snap?" by [James Doss-Gollin](https://dossgollin-lab.github.io/) (Rice), [David J. Farnham](https://www.davidjfarnham.com/) (Carnegie Institute for Science), [Upmanu Lall](http://www.columbia.edu/~ula2/) (Columbia), and [Vijay Modi](https://www.me.columbia.edu/faculty/vijay-modi) (Columbia)
 
-- Dr. James Doss-Gollin, Rice University
-- Dr. David J. Farnham, Carnegie Institute for Science
-- Dr. Upmanu Lall, Columbia University
-- Dr. Vijay Modi, Columbia University
-
-*This paper has not yet been accepted for publication,* but our preprint is available on [EarthArxiv](https://eartharxiv.org/repository/view/2122/).
-Please cite this manuscript as
+This paper is available **OPEN ACCESS** in the journal Environmental Research Letters.
+Please cite it as something like:
 
 ```bibtex
-@unpublished{doss-gollin_txtreme:2021,
-  title = {How Unprecedented Was the {{February}} 2021 {{Texas}} cold snap?},
-  author = {{Doss-Gollin}, James and Farnham, David J. and Lall, Upmanu and Modi, Vijay},
-  year = {2021},
-  language = {en},
-  preprint = {https://eartharxiv.org/repository/view/2122/},
-  repo = {https://github.com/jdossgollin/2021-TXtreme}
+@article{doss-gollin_txtreme:2021,
+  title = {How Unprecedented Was the {{February}} 2021 {{Texas}} Cold Snap?},
+  author = {Doss-Gollin, James and Farnham, David J. and Lall, Upmanu and Modi, Vijay},
+  date = {2021},
+  journaltitle = {Environmental Research Letters},
+  shortjournal = {Environ. Res. Lett.},
+  issn = {1748-9326},
+  doi = {10.1088/1748-9326/ac0278},
+  langid = {english},
 }
 ```
 
