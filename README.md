@@ -1,11 +1,5 @@
 # 2021-TXtreme
 
-<a href="https://eartharxiv.org/repository/view/2122/">
-<img src="https://img.shields.io/static/v1?label=&message=Preprint&color=purple&logo=arxiv&style=flat" alt="Link">
-</a>
-
-[![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007)
-
 Welcome to the code repository for the paper "How unprecedented was the February 2021 Texas cold snap?" by [James Doss-Gollin](https://dossgollin-lab.github.io/) (Rice), [David J. Farnham](https://www.davidjfarnham.com/) (Carnegie Institute for Science), [Upmanu Lall](http://www.columbia.edu/~ula2/) (Columbia), and [Vijay Modi](https://www.me.columbia.edu/faculty/vijay-modi) (Columbia)
 
 This paper is available **OPEN ACCESS** in the journal Environmental Research Letters.
