@@ -27,3 +27,4 @@ jobs:
           auto_fix: true
           black: true
           black_args: "scripts codebase"
+          commit_message: "Automatically fix code style issues with ${linter}"
