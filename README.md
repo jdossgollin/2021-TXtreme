@@ -2,7 +2,11 @@
 
 Welcome to the code repository for the paper "[How unprecedented was the February 2021 Texas cold snap?](https://doi.org/10.1088/1748-9326/ac0278)" by [James Doss-Gollin](https://dossgollin-lab.github.io/) (Rice), [David J. Farnham](https://www.davidjfarnham.com/) (Carnegie Institute for Science), [Upmanu Lall](http://www.columbia.edu/~ula2/) (Columbia), and [Vijay Modi](https://www.me.columbia.edu/faculty/vijay-modi) (Columbia).
 
-A permanent and archived version of this repository is available on Zenodo [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007)
+## How to cite
+
+A permanent and archived version of this repository is available on Zenodo [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007).
+If you use this code (even if only as a template for your work), please cite the DOI above.
+To cite our results and/or methods, please reference the _Environmental Reserach Letters_ paper below.
 
 ## For the public
 
