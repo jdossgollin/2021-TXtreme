@@ -130,11 +130,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-doc/article.pdf
-doc/coverletter.pdf
-doc/review_response.pdf
-doc/revision.pdf
-doc/submission_01.pdf
-doc/submission_02.pdf
-doc/revision_01.pdf
-doc/supplemental.pdf
+doc/*/*.pdf

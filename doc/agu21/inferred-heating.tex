@@ -1,0 +1,12 @@
+\begin{block}{Methods and Data}
+    Engineers often use ``heating degree days'' to quantify the effect of cold temperature on people and buildings.
+    We develop a spatially aggregated time series, which has the straightforward interpretation as the average heating demand experienced by a Texas resident, called ``\textbf{inferred heating demand per capita}.''
+    \begin{enumerate}
+        \item Take gridded (\SI{0.25}{\degree}) hourly temperature data from ERA-5 reanalysis \cite{hersbach_era5:2020} (validated using other datasets -- see online supporting information)
+        \item Gridded 2020 population density from GPWv4 dataset \cite{ciesin_gpwv4:2016}
+        \item For each hour $t$ and grid cell $s$: calculate
+              $\text{HD}_{s,t} = \max (\SI{65}{\degree F} - T_{s,t}, \SI{0}{\degree F})$
+        \item Average over the region served by the Texas Interconnection (\cref{fig:local_era5}a), weighting each grid cell by population density
+    \end{enumerate}
+    Finally, we compute return periods using maximum likelihood GEV models (validated using other methods -- see online supporting information).
+\end{block}

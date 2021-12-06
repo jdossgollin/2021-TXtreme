@@ -1,0 +1,145 @@
+\documentclass[serif,mathserif,final]{beamer}
+\mode<presentation>{\usetheme{Lankton}}
+
+
+\usepackage[
+  orientation=landscape,
+  width=48in,height=36in,%size=a0, % paper size
+  scale=1.25 % font scale factor
+  ]{beamerposter}
+ \setbeamertemplate{caption}[numbered] % number figs
+
+% Graphics Path
+\usepackage{graphicx}
+\graphicspath{{../../fig/}{./}}
+
+\usepackage[ttscale=0.8]{libertine} % better font
+
+% OTHER PACKAGE CALLS
+\usepackage[utf8]{inputenc}
+\usepackage{
+  amsmath,
+  amsfonts,
+  amssymb,
+  xspace,
+  framed,
+  siunitx,
+  nth,
+  physics,
+  nicefrac,
+}
+\sisetup{round-mode = figures, round-precision = 3}
+\usepackage{cleveref}
+
+%------ USE BIBLATEX WITH EXTREMELY MINAMALIST STYLE -----
+% Use BibLaTeX
+\usepackage[
+	backend=biber,
+	url=false,
+	isbn=false,
+	doi=false,
+	maxnames = 2,
+	style=numeric-comp,
+	uniquename=false,
+	uniquelist=false,
+	firstinits=true,
+	sorting=none,
+	natbib=false,
+	isbn=false,
+]{biblatex}
+\addbibresource{library.bib}
+\renewbibmacro{in:}{}
+
+% One-paragraph bibliography environment
+\defbibenvironment{bibliography}
+{\list%
+  {\printtext[labelnumberwidth]{%
+    \printfield{prefixnumber}%
+    \printfield{labelnumber}}%
+  \ifentrytype{article}{}{}}%
+    {\setlength{\leftmargin}{0pt}%
+    \setlength{\topsep}{0pt}}%
+    \renewcommand*{\makelabel}[1]{##1}}%
+  {\endlist}%
+{\mkbibitem}
+
+% \mkbibitem just prints item label and non-breakable space
+\makeatletter
+\newcommand{\mkbibitem}{\@itemlabel\addnbspace}
+\makeatother
+
+% Add breakable space between bibliography items
+\renewcommand*{\finentrypunct}{\addperiod\space}
+
+% Set fields to clear
+\AtEveryBibitem{%
+	\clearfield{month}%
+	\clearfield{day}%
+  \clearlist {language}%why this has to be clear list.....
+  \clearfield{pages}%
+	\clearfield{pagetotal}%
+	\clearfield{eprinttype}%
+	\clearfield{eprint}%
+	\clearfield{number}%
+	\clearfield{volume}%
+	\clearfield{issue}%
+	\clearfield{name:given}
+	\clearfield{name:first}
+	\ifentrytype{article}{%
+		\clearfield{title}%
+	}%
+}
+
+%------- GLOSSARIES PACKAGE -------
+%\usepackage[acronym]{glossaries}
+%\makeglossaries
+
+%-- Header and footer information ----------------------------------
+\newcommand{\footleft}{\textbf{Paper}: How unprecedented was the February 2021 Texas cold snap? \textit{Environmental Research Letters} (2021). \href{https://doi.org/10.1088/1748-9326/ac0278}{doi.org/10.1088/1748-9326/ac0278}.}
+\newcommand{\footright}{\textbf{Codes}: \href{https://github.com/jdossgollin/2021-TXtreme/}{github.com/jdossgollin/2021-TXtreme/}}
+\title{How Unprecedented Was the February 2021 Texas Cold Snap?}
+\author{James Doss-Gollin\inst{*}\inst{1} \quad David J. Farnham\inst{2}\inst{3} \quad Vijay Modi\inst{4} \quad Upmanu Lall\inst{5}}
+\institute{\inst{*}\href{mailto:jdossgollin@rice.edu}{jdossgollin@rice.edu} \quad \inst{1} Department of Civil and Environmental Engineering, Rice University \quad  \inst{2} ClimateAI \quad \inst{3} Department of Global Ecology, Carnegie Institution for Science \\ \inst{4} Department of Mechanical Engineering, Columbia University \quad \inst{5} Department of Earth and Environmental Engineering, Columbia University}
+
+%-------------------------------------------------------------------
+
+
+%-- Main Document --------------------------------------------------
+\begin{document}
+\begin{frame}{}
+  \begin{columns}[t]
+
+    \nocite{doss-gollin_txtreme:2021,doss-gollin_codes_txtreme:2021}
+
+    %-- Column 1 ---------------------------------------------------
+    \begin{column}{0.275\linewidth}
+
+
+      \input{at-a-glance.tex}
+      \input{key-findings.tex}
+      \begin{block}{References}
+        \renewcommand*{\bibfont}{\footnotesize}
+        \printbibliography[heading=none]
+      \end{block}
+
+    \end{column}%1
+
+    %-- Column 2 ---------------------------------------------------
+    \begin{column}{0.325\linewidth}
+
+      \input{how-cold.tex}
+      \input{inferred-heating.tex}
+
+    \end{column}
+
+    %-- Column 3 ---------------------------------------------------
+    \begin{column}{0.325\linewidth}
+
+      \input{aggregate_rt.tex}
+      \input{spatial_rt.tex}
+
+    \end{column}
+
+  \end{columns}
+\end{frame}
+\end{document}
