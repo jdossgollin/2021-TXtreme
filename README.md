@@ -26,6 +26,7 @@ Please cite it as something like:
 
 Several summaries of this work are available.
 If you'd like a high-level overview of this work, we suggest this [Twitter thread](https://twitter.com/jdossgollin/status/1395484338750431237) by James Doss-Gollin, a [summary](https://cee.rice.edu/news/was-februarys-winter-storm-texas-unprecedented) by Rice University, or a Columbia Earth Institute [blog post](https://blogs.ei.columbia.edu/2021/03/16/unprecedented-texas-cold-snap/) by all authors.
+You can also view the poster summarizing this work included [in this repository](./doc/agu21/poster.pdf).
 
 ## For researchers
 
