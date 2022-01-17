@@ -38,7 +38,7 @@ rule get_generators:
 # Use the CDAS API to download hourly ERA5 temperature data over Texas; you will get an error unless you register for account. See `README.md`.
 rule get_era5_tx_hourly:
     input: script = scriptdir("era5_get_tx_hourly.py")
-    output: datadir("data", "raw", "era5", "tx", "temp_hourly_{year}.nc")
+    output: datadir("raw", "era5", "tx", "temp_hourly_{year}.nc")
     shell: "python {input.script} --year {wildcards.year} -o {output}"
 
 # use the API to download daily ERA5 temperature data over CONUS
