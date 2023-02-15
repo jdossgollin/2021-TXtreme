@@ -2,16 +2,13 @@
 
 Welcome to the code repository for the paper "[How unprecedented was the February 2021 Texas cold snap?](https://doi.org/10.1088/1748-9326/ac0278)" by [James Doss-Gollin](https://dossgollin-lab.github.io/) (Rice), [David J. Farnham](https://www.davidjfarnham.com/) (Carnegie Institute for Science), [Upmanu Lall](http://www.columbia.edu/~ula2/) (Columbia), and [Vijay Modi](https://www.me.columbia.edu/faculty/vijay-modi) (Columbia).
 
+Some edits to this repository have been made since the paper was published (to add analysis of summer extremes and to run for more years).
+For the exact version used to generate our published results, a permananent repository is available on Zenodo [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007).
+
 ## How to cite
 
-A permanent and archived version of this repository is available on Zenodo [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007).
-If you use this code (even if only as a template for your work), please cite the DOI above.
-To cite our results and/or methods, please reference the _Environmental Reserach Letters_ paper below.
-
-## For the public
-
 This paper is available **OPEN ACCESS** in the journal Environmental Research Letters.
-Please cite it as something like:
+To cite our results and/or methods, please cite it as something like:
 
 ```bibtex
 @article{doss-gollin_txtreme:2021,
@@ -64,7 +61,7 @@ If you want to dig deeper, but not to run our codes, then you may want to look a
 > If you want to reproduce or modify our results, this section is for you
 
 Please note: **running this will require approximately 60GB of disk space**.
-*All commands here assume standard UNIX terminal; Windows may be subtly different*.
+_All commands here assume standard UNIX terminal; Windows may be subtly different_.
 
 First, `git clone` the repository to your machine.
 
@@ -76,7 +73,7 @@ Next, you need to create th conda environment:
 conda env create --file environment.yml
 ```
 
-*If this gives you any trouble, you can use the exact version of packages that we did (this worked on an Apple M1 Macbook emulating OSX-64 but your mileage may vary on other systems):*
+_If this gives you any trouble, you can use the exact version of packages that we did (this worked on an Apple M1 Macbook emulating OSX-64 but your mileage may vary on other systems):_
 
 ```shell
 conda create --name txtreme --file conda.txt
