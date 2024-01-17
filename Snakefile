@@ -192,7 +192,7 @@ rule ghcn_subset:
         script=scriptdir("ghcn_subset.py"),
         stations=datadir("raw", "ghcnd_stations.txt"),
     output:
-        datadir("processed", "ghnd", "valid_stations.csv"),
+        datadir("processed", "ghcnd", "valid_stations.csv"),
     shell:
         "python {input.script} -i {input.stations} -o {output}"
 
@@ -201,7 +201,7 @@ rule ghcn_subset:
 rule historical_exceedance:
     input:
         script=scriptdir("ghcn_return_period.py"),
-        stations=datadir("processed", "ghnd", "valid_stations.csv"),
+        stations=datadir("processed", "ghcnd", "valid_stations.csv"),
     output:
         datadir("processed", "ghcnd", "return_periods.csv"),
     shell:

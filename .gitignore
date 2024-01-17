@@ -1,3 +1,5 @@
+nohup.out
+
 data/raw/
 data/processed/
 .snakemake/

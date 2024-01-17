@@ -24,7 +24,13 @@ def main() -> None:
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
-    temp = xr.open_mfdataset(args.infiles)["t2m"].compute()
+    # this makes the workflow easier to debug and run in a notebook vs 
+    # using args.infiles and args.outfile
+    infiles = args.infiles
+    outfile = args.outfile
+
+    # read in the raw data
+    temp = xr.open_mfdataset(infiles)["t2m"].compute().isel(expver=1).drop_vars("expver")
     temp_roll = xr.concat(
         [
             temp.rolling(time=dur).mean().assign_coords({"duration": dur})
@@ -57,7 +63,7 @@ def main() -> None:
                     dict(longitude=lon, latitude=lat, duration=duration)
                 ] = rt_estimate
 
-    era5_return.to_netcdf(args.outfile, format="NETCDF4")
+    era5_return.to_netcdf(outfile, format="NETCDF4")
 
 
 if __name__ == "__main__":
