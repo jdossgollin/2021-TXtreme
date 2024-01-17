@@ -22,6 +22,7 @@ rule default_rule:
         figdir("ERCOT_HDD_IDF_MLE_unweighted.pdf"),
         figdir("ERCOT_HDD_IDF_plotpos_popweighted.pdf"),
         figdir("ERCOT_HDD_IDF_plotpos_unweighted.pdf"),
+        figdir("ERCOT_HDD_blog.pdf"),
         figdir("historic_events_era5.pdf"),
         figdir("historic_events_era5_TX.pdf"),
         figdir("historic_events_bk.pdf"),
@@ -221,6 +222,7 @@ rule hdd_idf:
         figdir("ERCOT_HDD_IDF_MLE_unweighted.pdf"),
         figdir("ERCOT_HDD_IDF_plotpos_popweighted.pdf"),
         figdir("ERCOT_HDD_IDF_plotpos_unweighted.pdf"),
+        figdir("ERCOT_HDD_blog.pdf"),
     notebook:
         scriptdir("hdd_idf.ipynb")
 
