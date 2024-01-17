@@ -2,10 +2,6 @@
 
 Welcome to the code repository for the paper "[How unprecedented was the February 2021 Texas cold snap?](https://doi.org/10.1088/1748-9326/ac0278)" by [James Doss-Gollin](https://dossgollin-lab.github.io/) (Rice), [David J. Farnham](https://www.davidjfarnham.com/) (Carnegie Institute for Science), [Upmanu Lall](http://www.columbia.edu/~ula2/) (Columbia), and [Vijay Modi](https://www.me.columbia.edu/faculty/vijay-modi) (Columbia).
 
-**Note:** 
-Some edits to this repository have been made since the paper was published (to add analysis of summer extremes and to run for more years).
-For the exact version used to generate our published results, a permananent repository is available on Zenodo [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007).
-
 ## How to cite
 
 This paper is available **OPEN ACCESS** in the journal Environmental Research Letters.
@@ -22,9 +18,12 @@ To cite our results and/or methods, please cite it as something like:
 }
 ```
 
-Several summaries of this work are available.
-If you'd like a high-level overview of this work, we suggest this [Twitter thread](https://twitter.com/jdossgollin/status/1395484338750431237) by James Doss-Gollin, a [summary](https://cee.rice.edu/news/was-februarys-winter-storm-texas-unprecedented) by Rice University, or a Columbia Earth Institute [blog post](https://blogs.ei.columbia.edu/2021/03/16/unprecedented-texas-cold-snap/) by all authors.
-You can also view the poster summarizing this work included [in this repository](./doc/agu21/poster.pdf).
+Several summaries of this work are available:
+
+- A high-level overview of this work in this [Twitter thread](https://twitter.com/jdossgollin/status/1395484338750431237)
+- A [summary](https://cee.rice.edu/news/was-februarys-winter-storm-texas-unprecedented) by Rice University
+- A Columbia Earth Institute [blog post](https://blogs.ei.columbia.edu/2021/03/16/unprecedented-texas-cold-snap/) by all authors
+- View a poster summarizing this work, presented at AGU 2023, [in this repository](./doc/agu21/poster.pdf)
 
 ## For researchers
 
@@ -33,6 +32,13 @@ Thus we use only publicly available data sets.
 All code is posted on this repository.
 
 The following sections outline the steps you can take to examine and reproduce our work.
+
+### Important comment on updates and versioning
+
+Some edits to this repository have been made since the paper was published (e.g., to run for more years).
+You will find that the current results **differ from our published paper** in minor ways, becasue we are using more data (we have added 1940-1949 and through nearly the present day in ERA5).
+We have made some other minor edits to our code to add clarity or address code deprecation; this should not meanintfully affect results.
+For the exact version of our codes used to generate the published results, a permananent repository is available on Zenodo [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007).
 
 ### Repository organization
 
