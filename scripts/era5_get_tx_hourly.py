@@ -20,14 +20,9 @@ def main() -> None:
     parser.add_argument("-o", "--outfile", type=str)
     args = parser.parse_args()
 
-    if args.year >= 1979:
-        dataname = "reanalysis-era5-single-levels"
-    else:
-        dataname = "reanalysis-era5-single-levels-preliminary-back-extension"
-
     ecmwf_client = cdsapi.Client()
     ecmwf_client.retrieve(
-        dataname,
+        "reanalysis-era5-single-levels",
         {
             "product_type": "reanalysis",
             "variable": "2m_temperature",
