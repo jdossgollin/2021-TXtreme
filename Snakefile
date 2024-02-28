@@ -12,7 +12,7 @@ from codebase.path import datadir, scriptdir, figdir
 BERKELEY_DECADES = np.arange(
     1880, 2020, 10
 )  # decades to download for the Berkeley Earth data
-ERA_YEARS = np.arange(1940, 2023 + 1)  # years to download for ERA5 data
+ERA_YEARS = np.arange(1940, 2024 + 1)  # years to download for ERA5 data
 
 
 # this rule tells Snakemake to create all the data that is imported directly into the Jupyter notebooks
