@@ -21,7 +21,8 @@ X0, X1 = (-108, -92)
 Y0, Y1 = (25, 38)
 
 
-def download_forecast(model: str, init_time: datetime, end_time: datetime, outfile: str) -> None:
+def download_forecast(model: str, init_time: datetime, end_time: datetime, outfile: str,
+                     ensemble_member: int = None) -> None:
     """
     Download ECMWF forecast 2m temperature for Texas.
 
@@ -36,6 +37,9 @@ def download_forecast(model: str, init_time: datetime, end_time: datetime, outfi
         End of forecast period to download
     outfile : str
         Output netCDF file path
+    ensemble_member : int, optional
+        For 'ens' model: specific member to download (0-50), or None for all members.
+        Use 0 for control forecast.
     """
     # Use AWS as source (generally faster)
     client = Client(source="aws")
@@ -76,8 +80,20 @@ def download_forecast(model: str, init_time: datetime, end_time: datetime, outfi
 
     if model == "ens":
         # IFS Ensemble - perturbed forecasts (50 members) + control
-        request["type"] = "pf"  # perturbed forecast
-        request["stream"] = "enfo"  # ensemble forecast
+        if ensemble_member is not None:
+            if ensemble_member == 0:
+                # Control forecast
+                request["type"] = "cf"
+                request["stream"] = "enfo"
+            else:
+                # Specific perturbed member
+                request["type"] = "pf"
+                request["stream"] = "enfo"
+                request["number"] = ensemble_member
+        else:
+            # All members
+            request["type"] = "pf"
+            request["stream"] = "enfo"
     elif model == "aifs":
         # AIFS model
         request["model"] = "aifs"
@@ -90,8 +106,23 @@ def download_forecast(model: str, init_time: datetime, end_time: datetime, outfi
 
     try:
         print(f"Downloading from ECMWF Open Data...")
-        client.retrieve(**request)
-        print(f"Downloaded to {tmp_grib}")
+        import time
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                client.retrieve(**request)
+                print(f"Downloaded to {tmp_grib}")
+                break
+            except Exception as e:
+                if "SlowDown" in str(e) or "503" in str(e):
+                    if attempt < max_retries - 1:
+                        wait_time = (attempt + 1) * 30  # 30, 60, 90 seconds
+                        print(f"Rate limited. Waiting {wait_time}s before retry {attempt + 2}/{max_retries}...")
+                        time.sleep(wait_time)
+                    else:
+                        raise
+                else:
+                    raise
 
         # Open with xarray and subset to Texas
         print("Processing GRIB file...")
@@ -197,12 +228,19 @@ def main():
         required=True,
         help="Output netCDF file path"
     )
+    parser.add_argument(
+        "--member",
+        type=int,
+        default=None,
+        help="For ensemble: specific member to download (0=control, 1-50=perturbed). Default: all members"
+    )
     args = parser.parse_args()
 
     init_time = datetime.strptime(args.init, "%Y%m%d%H")
     end_time = datetime.strptime(args.end, "%Y%m%d%H")
 
-    download_forecast(args.model, init_time, end_time, args.outfile)
+    download_forecast(args.model, init_time, end_time, args.outfile,
+                     ensemble_member=args.member)
 
 
 if __name__ == "__main__":

@@ -15,15 +15,13 @@ BERKELEY_DECADES = np.arange(
 ERA_YEARS = np.arange(1940, 2025 + 1)  # years to download for ERA5 data
 
 # Forecast parameters for Jan 2026 cold event
-FORECAST_INIT = "2026012100"  # Jan 21, 2026 00Z
-FORECAST_END = "2026012823"   # Jan 28, 2026 23Z
-FORECAST_ENS = datadir("raw", "ecmwf", "ens_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc")
-FORECAST_AIFS = datadir("raw", "ecmwf", "aifs_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc")
-FORECAST_HRES = datadir("raw", "ecmwf", "hres_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc")
+FORECAST_INIT = "2026012312"  # Jan 23, 2026 12Z (latest available)
+FORECAST_END = "2026013023"   # Jan 30, 2026 23Z
+FORECAST_MEMBERS = range(51)  # Ensemble members to download: 0=control, 1-50=perturbed
 
 
 # this rule tells Snakemake to create all the data that is imported directly into the Jupyter notebooks
-rule default_rule:
+rule all:
     input:
         figdir("ERCOT_HDD_IDF_MLE_popweighted.pdf"),
         figdir("ERCOT_HDD_IDF_MLE_unweighted.pdf"),
@@ -51,17 +49,7 @@ rule get_generators:
         "wget -O {output} https://www.eia.gov/electricity/data/eia860m/archive/xls/november_generator2020.xlsx"
 
 
-# Use the CDAS API to download hourly ERA5 temperature data over Texas; you will get an error unless you register for account. See `README.md`.
-rule get_era5_tx_hourly:
-    input:
-        script=scriptdir("era5_get_tx_hourly.py"),
-    output:
-        datadir("raw", "era5", "tx", "temp_hourly_{year}.nc"),
-    shell:
-        "python {input.script} --year {wildcards.year} -o {output}"
-
-
-# use the API to download daily ERA5 temperature data over CONUS
+# Download hourly ERA5 temperature data over CONUS from Google ARCO-ERA5 (no auth needed)
 rule get_era5_conus_hourly:
     input:
         script=scriptdir("era5_get_conus_hourly.py"),
@@ -69,6 +57,17 @@ rule get_era5_conus_hourly:
         datadir("raw", "era5", "conus", "temp_hourly_{year}.nc"),
     shell:
         "python {input.script} --year {wildcards.year} -o {output}"
+
+
+# Subset Texas data from CONUS files (more efficient than separate download)
+rule subset_tx_from_conus:
+    input:
+        script=scriptdir("subset_tx_from_conus.py"),
+        conus=datadir("raw", "era5", "conus", "temp_hourly_{year}.nc"),
+    output:
+        datadir("raw", "era5", "tx", "temp_hourly_{year}.nc"),
+    shell:
+        "python {input.script} -i {input.conus} -o {output}"
 
 
 # Download the raw berkeley earth temperature data
@@ -105,38 +104,55 @@ rule get_gpw_population:
         "python {input.script} -o {output}"
 
 
-# Named targets for forecast files
-rule forecast_ens:
+# Named target for all forecast HDD processing
+rule forecast_hdd_all:
     input:
-        FORECAST_ENS
+        expand(
+            datadir("processed", "ecmwf", "ens_tx", "forecast_" + FORECAST_INIT + "_" + FORECAST_END + "_member_{member}_hdd_ercot.nc"),
+            member=FORECAST_MEMBERS
+        )
 
 
-rule forecast_aifs:
-    input:
-        FORECAST_AIFS
-
-
-rule forecast_hres:
-    input:
-        FORECAST_HRES
-
-
-# Download ECMWF forecast data (IFS ensemble for uncertainty spread)
-rule get_ecmwf_forecast:
+# Download ECMWF IFS ensemble forecast for specific member
+rule get_ecmwf_ens_member:
     input:
         script=scriptdir("download_ecmwf_forecast.py"),
     output:
-        datadir("raw", "ecmwf", "{model}_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc"),
+        datadir("raw", "ecmwf", "ens_tx", "forecast_" + FORECAST_INIT + "_" + FORECAST_END + "_member_{member}.nc"),
     params:
         init=FORECAST_INIT,
         end=FORECAST_END,
     shell:
-        "python {input.script} --model {wildcards.model} --init {params.init} --end {params.end} -o {output}"
+        "python {input.script} --model ens --init {params.init} --end {params.end} --member {wildcards.member} -o {output}"
 
 
 ################################################################################
 ############################# PROCESS DATA #####################################
 ################################################################################
+
+
+# Compute HDD from forecast (interpolate to hourly and compute HDD)
+rule forecast_hdd:
+    input:
+        script=scriptdir("forecast_hdd.py"),
+        forecast=datadir("raw", "ecmwf", "ens_tx", "forecast_" + FORECAST_INIT + "_" + FORECAST_END + "_member_{member}.nc"),
+        population=datadir("raw", "gpwv4", "gpw_v4_population_density_rev11_2pt5_min.nc"),
+    output:
+        datadir("processed", "ecmwf", "ens_tx", "forecast_" + FORECAST_INIT + "_" + FORECAST_END + "_member_{member}_pop_hdd.nc"),
+    shell:
+        "python {input.script} --forecast {input.forecast} --population {input.population} -o {output}"
+
+
+# Aggregate forecast HDD over ERCOT (reuse existing script)
+rule forecast_hdd_ercot:
+    input:
+        script=scriptdir("hdd_ercot.py"),
+        hdd=datadir("processed", "ecmwf", "ens_tx", "forecast_" + FORECAST_INIT + "_" + FORECAST_END + "_member_{member}_pop_hdd.nc"),
+        boundary=datadir("raw", "eia", "regions_NERC", "NercRegions_201907.shp"),
+    output:
+        datadir("processed", "ecmwf", "ens_tx", "forecast_" + FORECAST_INIT + "_" + FORECAST_END + "_member_{member}_hdd_ercot.nc"),
+    shell:
+        "python {input.script} --hdd {input.hdd} --boundary {input.boundary} -o {output}"
 
 
 # compute anomalies of temperature and heating degree days over CONUS for ERA5 data
@@ -262,7 +278,11 @@ rule historical_exceedance:
 
 rule hdd_idf:
     input:
-        datadir("processed", "era5", "tx", "hdd_ercot.nc"),
+        hdd_era5=datadir("processed", "era5", "tx", "hdd_ercot.nc"),
+        hdd_forecast=expand(
+            datadir("processed", "ecmwf", "ens_tx", "forecast_" + FORECAST_INIT + "_" + FORECAST_END + "_member_{member}_hdd_ercot.nc"),
+            member=FORECAST_MEMBERS
+        ),
     output:
         figdir("ERCOT_HDD_IDF_MLE_popweighted.pdf"),
         figdir("ERCOT_HDD_IDF_MLE_unweighted.pdf"),
