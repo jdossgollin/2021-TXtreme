@@ -4,21 +4,23 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - python=3.7
+  - python>=3.10
   - black
   - bottleneck
   - cartopy
   - cdsapi
+  - cfgrib
   - dask
+  - eccodes
   - geopandas
   - jupyterlab
   - matplotlib
   - mypy
-  - nb_black
   - netcdf4
   - numpy
   - openpyxl
   - pandas
+  - papermill
   - pip
   - pylint
   - regionmask
@@ -27,5 +29,11 @@ dependencies:
   - snakemake
   - tqdm
   - xarray
+  - zarr
+  - aiohttp
+  - fsspec
+  - gcsfs
   - pip:
       - matplotlib-label-lines
+      - earthaccess
+      - ecmwf-opendata

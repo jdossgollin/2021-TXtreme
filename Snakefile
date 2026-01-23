@@ -12,7 +12,14 @@ from codebase.path import datadir, scriptdir, figdir
 BERKELEY_DECADES = np.arange(
     1880, 2020, 10
 )  # decades to download for the Berkeley Earth data
-ERA_YEARS = np.arange(1940, 2024 + 1)  # years to download for ERA5 data
+ERA_YEARS = np.arange(1940, 2025 + 1)  # years to download for ERA5 data
+
+# Forecast parameters for Jan 2026 cold event
+FORECAST_INIT = "2026012100"  # Jan 21, 2026 00Z
+FORECAST_END = "2026012823"   # Jan 28, 2026 23Z
+FORECAST_ENS = datadir("raw", "ecmwf", "ens_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc")
+FORECAST_AIFS = datadir("raw", "ecmwf", "aifs_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc")
+FORECAST_HRES = datadir("raw", "ecmwf", "hres_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc")
 
 
 # this rule tells Snakemake to create all the data that is imported directly into the Jupyter notebooks
@@ -86,6 +93,45 @@ rule get_ghcnd_data:
         datadir("raw", "ghcnd_all", "USW00012960.dly"),
     shell:
         "wget https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz -O - | tar -xz -C data/raw"
+
+
+# Download GPW v4 population density from NASA SEDAC (requires Earthdata login)
+rule get_gpw_population:
+    input:
+        script=scriptdir("download_gpw.py"),
+    output:
+        datadir("raw", "gpwv4", "gpw_v4_population_density_rev11_2pt5_min.nc"),
+    shell:
+        "python {input.script} -o {output}"
+
+
+# Named targets for forecast files
+rule forecast_ens:
+    input:
+        FORECAST_ENS
+
+
+rule forecast_aifs:
+    input:
+        FORECAST_AIFS
+
+
+rule forecast_hres:
+    input:
+        FORECAST_HRES
+
+
+# Download ECMWF forecast data (IFS ensemble for uncertainty spread)
+rule get_ecmwf_forecast:
+    input:
+        script=scriptdir("download_ecmwf_forecast.py"),
+    output:
+        datadir("raw", "ecmwf", "{model}_tx", f"forecast_{FORECAST_INIT}_{FORECAST_END}.nc"),
+    params:
+        init=FORECAST_INIT,
+        end=FORECAST_END,
+    shell:
+        "python {input.script} --model {wildcards.model} --init {params.init} --end {params.end} -o {output}"
 
 
 ################################################################################
@@ -223,6 +269,7 @@ rule hdd_idf:
         figdir("ERCOT_HDD_IDF_plotpos_popweighted.pdf"),
         figdir("ERCOT_HDD_IDF_plotpos_unweighted.pdf"),
         figdir("ERCOT_HDD_blog.pdf"),
+        figdir("ERCOT_HDD_blog_forecast.pdf"),
     notebook:
         scriptdir("hdd_idf.ipynb")
 
