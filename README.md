@@ -36,8 +36,8 @@ The following sections outline the steps you can take to examine and reproduce o
 ### Important comment on updates and versioning
 
 Some edits to this repository have been made since the paper was published (e.g., to run for more years).
-You will find that the current results **differ from our published paper** in minor ways, becasue we are using more data (we have added 1940-1949 and through nearly the present day in ERA5).
-We have made some other minor edits to our code to add clarity or address code deprecation; this should not meanintfully affect results.
+You will find that the **current results differ from our published paper in minor ways**, becasue we are using more data (we have added 1940-1949 and through nearly the present day in ERA5).
+We have made some other minor edits to our code to add clarity or address code deprecation.
 For the exact version of our codes used to generate the published results, a permananent repository is available on Zenodo [![DOI](https://zenodo.org/badge/339750007.svg)](https://zenodo.org/badge/latestdoi/339750007).
 
 ### Repository organization
@@ -101,7 +101,7 @@ pip install -e .
 In order to run, you will need to do two things to access required data.
 
 1. Download the GPWV4 data. See instructions in [`data/raw/gpwv4/README.md`](data/raw/gpwv4/README.md).
-1. Register for [a CDSAPI key](https://cds.climate.copernicus.eu/api-how-to) with the ECMWF. This key is **required** for you to access this data. If you do not properly install the CDSAPI key, you will not be able to download the ERA-5 reanalysis data.
+2. Register for [a CDSAPI key](https://cds.climate.copernicus.eu/api-how-to) with the ECMWF. This key is **required** for you to access this data. If you do not properly install the CDSAPI key, you will not be able to download the ERA-5 reanalysis data.
 
 Now you can run!
 
