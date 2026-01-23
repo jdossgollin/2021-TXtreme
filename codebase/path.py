@@ -7,10 +7,12 @@ https://juliadynamics.github.io/DrWatson.jl/dev/
 
 import os
 
-PARDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
-FIGDIR = os.path.join(PARDIR, "fig")
-DATADIR = os.path.join(PARDIR, "data")
-SCRIPTDIR = os.path.join(PARDIR, "scripts")
+# Project root is parent of codebase directory
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+FIGDIR = os.path.join(_PROJECT_ROOT, "fig")
+DATADIR = os.path.join(_PROJECT_ROOT, "data")
+SCRIPTDIR = os.path.join(_PROJECT_ROOT, "scripts")
 
 
 def ensure_dir(dir):
